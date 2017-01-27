@@ -263,6 +263,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: false
                 },
+                // TODO: El guardado de los datos lo raliza en codificacion,
+                // TODO: Preguntar a remsi.
                 {
                     config: {
                         name: 'cod_criterio',
@@ -313,7 +315,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {
 //            TODO: Preguntar a cristian como trabajar con los datos de cargo
                     config: {
-                        name: 'id_cargo',
+                        name: 'id_cargos',
                         fieldLabel: 'Cargo',
                         allowBlank: false,
                         emptyText: 'Cargo...',
@@ -358,7 +360,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config: {
-                        name: 'id_competencia',
+                        name: 'id_competencias',
                         fieldLabel: 'Competencias',
                         allowBlank: false,
                         emptyText: 'Competencias...',
@@ -403,7 +405,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config: {
-                        name: 'id_proveedor',
+                        name: 'id_proveedores',
                         fieldLabel: 'Proveedores',
                         allowBlank: false,
                         emptyText: 'Proveedores...',

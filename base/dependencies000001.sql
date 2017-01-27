@@ -76,11 +76,8 @@ select pxp.f_insert_testructura_gui ('SIGEFOCO', 'SIGEFO');
 /***********************************F-DEP-YAC-SIGEFO-0-05/05/2017*****************************************/
 
 
+
 /***********************************I-DEP-JUAN-SIGEFO-0-05/05/2017*****************************************/
-
-
-
-
 
 ALTER TABLE sigefo.tcurso
   ADD CONSTRAINT tcurso_fk FOREIGN KEY (id_gestion)
@@ -139,10 +136,18 @@ ALTER TABLE sigefo.tcurso_planificacion
     NOT DEFERRABLE;    
 /***********************************F-DEP-JUAN-SIGEFO-0-05/05/2017*****************************************/
 
+/***********************************I-DEP-YAC-SIGEFO-1-05/05/2017*****************************************/
+
+ALTER TABLE sigefo.tplanificacion_proveedor
+  ADD CONSTRAINT tplanificacion_proveedor_fk FOREIGN KEY (id_planificacion)
+REFERENCES sigefo.tplanificacion(id_planificacion)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+/***********************************F-DEP-YAC-SIGEFO-1-05/05/2017*****************************************/
 
 /***********************************I-DEP-JUAN-SIGEFO-0-08/05/2017*****************************************/
 
---------------- SQL ---------------
 
 ALTER TABLE sigefo.tcurso_funcionario
   ADD CONSTRAINT tcurso_funcionario_fk FOREIGN KEY (id_curso)
@@ -151,7 +156,6 @@ ALTER TABLE sigefo.tcurso_funcionario
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
     
-
 ALTER TABLE sigefo.tcurso_funcionario
   ADD CONSTRAINT tcurso_funcionario_fk1 FOREIGN KEY (id_funcionario)
     REFERENCES orga.tfuncionario(id_funcionario)
@@ -164,6 +168,6 @@ select pxp.f_delete_testructura_gui ('CUPL', 'SIGEFOCU');
 select pxp.f_insert_testructura_gui ('CUPL', 'SIGEFO');
 select pxp.f_delete_testructura_gui ('CUFU', 'CUPL');
 select pxp.f_insert_testructura_gui ('CUFU', 'SIGEFO'); 
-/***********************************F-DEP-JUAN-SIGEFO-0-08/05/2017*****************************************/
 
+/***********************************F-DEP-JUAN-SIGEFO-0-08/05/2017*****************************************/
 

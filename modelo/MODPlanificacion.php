@@ -59,8 +59,15 @@ class MODPlanificacion extends MODbase{
 		$this->setParametro('nombre_planificacion','nombre_planificacion','varchar');
 		$this->setParametro('necesidad','necesidad','text');
 		$this->setParametro('horas_previstas','horas_previstas','int4');
+        $this->setParametro('cod_criterio', 'cod_criterio', 'varchar');
+        $this->setParametro('id_competencias', 'id_competencias', 'varchar');
+        $this->setParametro('id_cargos', 'id_cargos', 'varchar');
+        $this->setParametro('id_proveedores', 'id_proveedores', 'varchar');
 
-		//Ejecuta la instruccion
+
+
+
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 

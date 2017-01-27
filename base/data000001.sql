@@ -29,6 +29,7 @@ select param.f_import_tcatalogo ('insert','SIGEFO','Actitud','actitud','tipocomp
 
 /********************************************F-DAT-YAC-SP-1-05/05/2017********************************************/
 
+
 /********************************************I-DAT-JUAN-SP-1-08/05/2017********************************************/
 select pxp.f_insert_tgui ('Curso competencia', 'Cursos', 'SIGEFOCU', 'si', 3, 'sis_formacion/vista/curso/FormCursoCompetencia.php', 2, '', 'FormCursoCompetencia', 'SIGEFO');
 select pxp.f_insert_tgui ('Curso planificación', 'Curso planificación', 'CUPL', 'si', 4, 'sis_formacion/vista/curso/FormCursoPlanificacion.php', 3, '', 'FormCursoPlanificacion', 'SIGEFO');
@@ -50,3 +51,4 @@ select param.f_import_tcatalogo ('insert','SIGEFO','Externo','oc_externo','orige
 select param.f_import_tcatalogo ('insert','SIGEFO','Interno','oc_interno','origen_curso');
 
 /********************************************F-DAT-JUAN-SP-1-08/05/2017********************************************/
+

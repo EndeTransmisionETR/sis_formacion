@@ -62,7 +62,6 @@ WITH (oids = false);
 
 
 /***********************************I-SCP-JUAN-SIGEFO-0-05/05/2017****************************************/
---------------- SQL ---------------
 
 CREATE TABLE sigefo.tcurso (
   id_curso SERIAL NOT NULL,
@@ -107,15 +106,14 @@ WITH (oids = false);
 
 
 /***********************************I-SCP-JUAN-SIGEFO-0-08/05/2017****************************************/
---------------- SQL ---------------
 
 CREATE TABLE sigefo.tcurso_funcionario (
   id_curso_funcionario SERIAL NOT NULL,
   id_curso INTEGER,
   id_funcionario INTEGER,
   PRIMARY KEY(id_curso_funcionario)
-) INHERITS (pxp.tbase)
+  ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
-
+  
 /***********************************F-SCP-JUAN-SIGEFO-0-08/05/2017****************************************/
