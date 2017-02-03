@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "sigefo"."ft_competencia_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION sigefo.ft_competencia_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema de gestión de la formación
  FUNCION: 		sigefo.ft_competencia_ime
@@ -24,9 +29,17 @@ DECLARE
 	v_parametros           	record;
 	v_id_requerimiento     	integer;
 	v_resp		            varchar;
-	v_nombre_funcion        text;
-	v_mensaje_error         text;
-	v_id_competencia	integer;
+	v_nombre_funcion           text;
+	v_mensaje_error            text;
+	v_id_competencia	    integer;
+    
+    j_cargos                   JSON;
+    j_id_cargos                JSON;
+    j_competencias             JSON;
+    j_id_competencias          JSON;
+    
+    v_validar_cargo_competencia integer;
+    v_cargo_competencia_duplicados text;
 			    
 BEGIN
 
@@ -106,6 +119,66 @@ BEGIN
             return v_resp;
             
 		end;
+        
+	/*********************************    
+ 	#TRANSACCION:  'SIGEFOCCO_INS'
+ 	#DESCRIPCION:	Insertar la tabla cargo competencia
+ 	#AUTOR:		Juan	
+ 	#FECHA:		11-05-2017 19:30:13
+	***********************************/
+
+	elsif(p_transaccion='SIGEFOCCO_INS')then
+        
+		begin
+		  j_id_cargos := v_parametros.cod_cargos;
+          
+         FOR j_cargos IN (SELECT * FROM json_array_elements(j_id_cargos) ) LOOP
+           --   raise NOTICE '%',  (j_cargos ->> 'cod_cargo');
+              j_id_competencias := v_parametros.cod_competencias;
+              FOR j_competencias IN (SELECT * FROM json_array_elements(j_id_competencias) ) LOOP
+              
+              
+           --   v_cargo_competencia_duplicados text;
+    
+                v_validar_cargo_competencia=(select count(cc.id_cargo) from sigefo.tcargo_competencia cc where cc.id_cargo=(j_cargos ->> 'cod_cargo')::INTEGER and cc.id_competencia=(j_competencias ->> 'cod_competencia')::INTEGER);  
+              	if(v_validar_cargo_competencia > 0)then
+
+                v_cargo_competencia_duplicados =  (v_cargo_competencia_duplicados || (select (cargo.nombre ||' => '||c.competencia) from sigefo.tcargo_competencia cc join sigefo.tcompetencia c on c.id_competencia=cc.id_competencia join orga.tcargo cargo on cargo.id_cargo=cc.id_cargo   where cc.id_cargo=(j_cargos ->> 'cod_cargo')::INTEGER and cc.id_competencia=(j_competencias ->> 'cod_competencia')::INTEGER))::VARCHAR;
+                
+                else
+                  insert into sigefo.tcargo_competencia(
+			      id_cargo,
+			      id_competencia,
+            	  estado_reg,
+			      id_usuario_ai,
+			      id_usuario_reg,
+			      fecha_reg,
+			      usuario_ai,
+			      id_usuario_mod,
+			      fecha_mod
+          	      ) values(
+			      (j_cargos ->> 'cod_cargo')::INTEGER,
+			      (j_competencias ->> 'cod_competencia')::INTEGER,
+                   'activo',
+			       v_parametros._id_usuario_ai,
+			       p_id_usuario,
+			       now(),
+			       v_parametros._nombre_usuario_ai,
+			       null,
+			       null
+			       ); 
+                   
+                end if;
+ 
+                   
+              END LOOP;
+         END LOOP;
+        
+            --Devuelve la respuesta
+          --  raise EXCEPTION 'juan error ';
+            return v_resp;
+            
+		end;
 
 	/*********************************    
  	#TRANSACCION:  'SIGEFO_SIGEFOCO_ELI'
@@ -146,7 +219,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "sigefo"."ft_competencia_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

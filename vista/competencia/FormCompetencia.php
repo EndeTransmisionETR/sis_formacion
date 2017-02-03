@@ -10,20 +10,31 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-    Phx.vista.Competencia = Ext.extend(Phx.gridInterfaz, {
+    Phx.vista.FormCompetencia = Ext.extend(Phx.gridInterfaz, {
 
             constructor: function (config) {
                 this.maestro = config.maestro;
-                
+                //alert("paso 2");
+                console.log("config test ",config.maestro,config);
+                //this.initButtons=[this.cmbGestion];
                 
                 //llama al constructor de la clase padre
-                Phx.vista.Competencia.superclass.constructor.call(this, config);
+                Phx.vista.FormCompetencia.superclass.constructor.call(this, config);
                 this.init();
                 
+            this.addButton('btnCargosCompetencia',
+            {
+                text: 'Guardar curso competencia',
+                iconCls: 'blist',
+                disabled: true,
+                handler: this.btnCargosCompetencia,
+                tooltip: 'Guardar relacion de cargos y competencias'
+            });
 
 		
                 this.load({params: {start: 0, limit: this.tam_pag}})
-
+                
+                //console.log("ids resibidos en json ", this.id_cargos);
             },
             
   
@@ -42,7 +53,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     //configuracion del componente
-                    config: {
+                config: {
                         labelSeparator: '',
                         inputType: 'hidden',
                         name: 'cod_competencia'
@@ -61,6 +72,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength: 200
                     },
                     type: 'TextField',
+		            bottom_filter : true,
                     filters: {pfiltro: 'sigefoco.competencia', type: 'string'},
                     id_grupo: 1,
                     grid: true,
@@ -236,8 +248,63 @@ header("content-type: text/javascript; charset=UTF-8");
                 field: 'id_competencia',
                 direction: 'ASC'
             },
-            bdel: true,
-            bsave: true
+
+			bdel: false,
+            bsave: false,
+            bnew:false,
+            bedit:false,
+            
+        liberaMenu:function(){	
+        this.getBoton('btnCargosCompetencia').enable();       
+        Phx.vista.FormCompetencia.superclass.liberaMenu.call(this);
+        },
+            
+        btnCargosCompetencia: function(){
+        	
+        	var filas=this.sm.getSelections();
+			var data= [],aux={};
+
+            this.agregarArgsExtraSubmit();
+            var rr="";
+			for(var i=0;i<this.sm.getCount();i++){
+		        aux={};
+				aux[this.id_store]=filas[i].data[this.id_store];
+				aux.cod_competencia=filas[i].data.cod_competencia;
+				
+				console.log("aux yac ", aux);
+				
+				data.push(aux);
+				console.log("filas competencia ", filas[i].data.cod_competencia);
+			}
+			
+    	    var me = this;
+            Ext.Ajax.request({
+
+                url: '../../sis_formacion/control/Competencia/insertarCargoCompetencia',
+                params: {
+                	cargos:this.cod_cargos,
+                	competencias: Ext.util.JSON.encode(data),
+                	//justificacion:'',
+                	},
+
+                success: me.successSave,
+                failure: me.conexionFailure,
+                timeout: me.timeout,
+                scope: me
+            });
+
+	     },
+	     successSave:function(res){
+	     	//Phx.vista.FormCompetencia.superclass.successSave.call(res);
+	     	//alert(res);
+	     	console.log("Probando respuesta ",res);
+	     	//this.reload();
+	     	console.log("padre ",this.idContenedorPadre);
+	     	console.log("contenedor ",Phx.CP.getPagina(this.idContenedorPadre));
+	     	Phx.CP.getPagina(this.idContenedorPadre).reload();
+	     	this.close();
+	     }
+	     
         }
     )
 </script>

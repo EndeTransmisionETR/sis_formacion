@@ -6,6 +6,8 @@ VALUES   ( E'SIGEFO', E'Sistema de gestión de la formación', E'2017-04-26', E'
 
 select pxp.f_insert_tgui ('SISTEMA DE GESTIÓN DE LA FORMACIÓN', '', 'SIGEFO', 'si', 1, '', 1, '', '', 'SIGEFO');
 
+
+
 -- TODO: Falta colocar los datos del catalogo
 
 /********************************************F-DAT-RAC-SP-0-15/01/2013********************************************/
@@ -55,4 +57,8 @@ select param.f_import_tcatalogo ('insert','SIGEFO','Interno','oc_interno','orige
 
 /********************************************F-DAT-JUAN-SP-1-08/05/2017********************************************/
 
+/********************************************I-DAT-JUAN-SP-1-16/05/2017********************************************/
+select pxp.f_insert_tgui ('SISTEMA DE GESTIÓN DE LA FORMACIÓN', '', 'SIGEFO', 'si', 1, '', 1, '', '', 'SIGEFO');
+select pxp.f_insert_tgui ('Cargo competencia', 'Cargo competencia', 'CACO', 'si', 6, 'sis_formacion/vista/competencia/FormCargo.php', 2, '', 'FormCargo', 'SIGEFO');
+/********************************************F-DAT-JUAN-SP-1-16/05/2017********************************************/
 
