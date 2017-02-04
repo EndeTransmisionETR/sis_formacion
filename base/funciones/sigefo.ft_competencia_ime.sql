@@ -1,4 +1,3 @@
---------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION sigefo.ft_competencia_ime (
   p_administrador integer,
@@ -225,3 +224,4 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+

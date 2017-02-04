@@ -23,6 +23,7 @@ class MODCurso extends MODbase{
 		$this->captura('id_curso','int4');
 		$this->captura('id_gestion','int4');
 		$this->captura('id_lugar','int4');
+		$this->captura('id_lugar_pais','int4');
 		$this->captura('id_proveedor','int4');
 		$this->captura('origen','varchar');
 		$this->captura('fecha_inicio','date');
@@ -46,6 +47,7 @@ class MODCurso extends MODbase{
 		
 		$this->captura('gestion','int4');
 		$this->captura('nombre','varchar');
+		$this->captura('nombre_pais','varchar');
 		$this->captura('rotulo_comercial','varchar');
 		
 		$this->captura('id_competencias','varchar');
@@ -65,6 +67,7 @@ class MODCurso extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
 			
 	function insertarCurso(){
 		//Definicion de variables para ejecucion del procedimiento
@@ -75,6 +78,7 @@ class MODCurso extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_gestion','id_gestion','int4');
 		$this->setParametro('id_lugar','id_lugar','int4');
+		$this->setParametro('id_lugar_pais','id_lugar_pais','int4');
 		$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('origen','origen','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');
@@ -112,6 +116,7 @@ class MODCurso extends MODbase{
 		$this->setParametro('id_curso','id_curso','int4');
 		$this->setParametro('id_gestion','id_gestion','int4');
 		$this->setParametro('id_lugar','id_lugar','int4');
+		$this->setParametro('id_lugar_pais','id_lugar_pais','int4');
 		$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('origen','origen','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');
@@ -155,6 +160,27 @@ class MODCurso extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+    function listarPaisLugar(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sigefo.ft_curso_sel';
+        $this->transaccion='PM_PAISLUGAR_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_lugar','int4');
+        $this->captura('nombre','varchar');
+        $this->captura('tipo','varchar');
+
+        //$this->captura('nombre_lugar','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

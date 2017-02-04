@@ -35,6 +35,8 @@ DECLARE
   v_id_cargo          INTEGER;
   va_id_proveedores   VARCHAR [];
   v_id_proveedor      INTEGER;
+  va_id_uos   VARCHAR [];
+  v_id_uo      INTEGER;
 
 
 BEGIN
@@ -184,6 +186,30 @@ BEGIN
 
       END LOOP;
 
+      -- Guardando las gerencias asociadas a la planificacion
+      va_id_uos := string_to_array(v_parametros.id_uo, ',');
+
+      FOREACH v_id_uo IN ARRAY va_id_uos
+      LOOP
+
+        INSERT INTO sigefo.tplanificacion_uo (
+          id_usuario_reg,
+          fecha_reg,
+          estado_reg,
+          id_usuario_ai,
+          id_planificacion,
+          id_uo
+        ) VALUES (
+          p_id_usuario,
+          now(),
+          'activo',
+          v_parametros._id_usuario_ai,
+          v_id_planificacion,
+          v_id_uo :: INTEGER
+        );
+
+      END LOOP;
+
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
                                   'Planificación almacenado(a) con exito (id_planificacion' || v_id_planificacion ||
@@ -249,6 +275,35 @@ BEGIN
             v_cod_criterio :: VARCHAR
           );
         END LOOP;
+
+        -- PLANIFICACION UOS(gerencias)
+        -- Eliminando
+        DELETE FROM sigefo.tplanificacion_uo puo
+        WHERE puo.id_planificacion = v_parametros.id_planificacion;
+        -- Insertando
+        va_id_uos := string_to_array(v_parametros.id_uo, ',');
+
+        FOREACH v_id_uo IN ARRAY va_id_uos
+        LOOP
+
+          INSERT INTO sigefo.tplanificacion_uo (
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_planificacion,
+            id_uo
+          ) VALUES (
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+            v_parametros.id_planificacion,
+            v_id_uo :: INTEGER
+          );
+
+        END LOOP;
+
 
         -- PLANIFICACION CARGOS
         -- Eliminando

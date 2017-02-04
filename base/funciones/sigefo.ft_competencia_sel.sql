@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION sigefo.ft_competencia_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -60,12 +58,12 @@ BEGIN
 						sigefoco.id_usuario_mod,
 						sigefoco.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        sigefoco.id_competencia as cod_competencia	
+						usu2.cuenta as usr_mod
 						from sigefo.tcompetencia sigefoco
 						inner join segu.tusuario usu1 on usu1.id_usuario = sigefoco.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefoco.id_usuario_mod
-									left join param.tcatalogo tc on tc.codigo = sigefoco.tipo
+						left join param.tcatalogo tc on tc.codigo = sigefoco.tipo
+						left join sigefo.tcargo_competencia cp on cp.id_competencia=sigefoco.id_competencia
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -264,11 +262,12 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_competencia)
+			v_consulta:='select count(sigefoco.id_competencia)
 					    from sigefo.tcompetencia sigefoco
 					    inner join segu.tusuario usu1 on usu1.id_usuario = sigefoco.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefoco.id_usuario_mod
-									left join param.tcatalogo tc on tc.codigo = sigefoco.tipo
+						left join param.tcatalogo tc on tc.codigo = sigefoco.tipo
+						left join sigefo.tcargo_competencia cp on cp.id_competencia=sigefoco.id_competencia
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -278,6 +277,7 @@ BEGIN
 			return v_consulta;
 
 		end;
+
 					
 	else
 					     

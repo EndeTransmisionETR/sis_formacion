@@ -134,3 +134,17 @@ ALTER TABLE sigefo.tplanificacion_critico
   RENAME TO tplanificacion_criterio;
 
 /***********************************F-SCP-YAC-SIGEFO-0-08/05/2017****************************************/
+/***********************************I-SCP-YAC-SIGEFO-0-10/05/2017****************************************/
+
+CREATE TABLE sigefo.tplanificacion_uo (
+  id_planificacion INTEGER,
+  id_uo INTEGER
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+/***********************************F-SCP-YAC-SIGEFO-0-10/05/2017****************************************/
+
+/***********************************I-SCP-YAC-SIGEFO-0-15/05/2017****************************************/
+ALTER TABLE sigefo.tcurso
+  ADD COLUMN id_lugar_pais INTEGER;
+/***********************************F-SCP-YAC-SIGEFO-0-15/05/2017****************************************/

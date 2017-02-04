@@ -254,6 +254,24 @@ ALTER TABLE sigefo.tplanificacion_proveedor
 select pxp.f_insert_testructura_gui ('CUR', 'SIGEFO');
 /***********************************F-DEP-YAC-SIGEFO-1-09/05/2017*****************************************/
 
+/***********************************I-DEP-YAC-SIGEFO-0-10/05/2017*****************************************/
+
+ALTER TABLE sigefo.tplanificacion_uo
+  ADD CONSTRAINT tplanificacion_uo_fk FOREIGN KEY (id_planificacion)
+REFERENCES sigefo.tplanificacion(id_planificacion)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+
+ALTER TABLE sigefo.tplanificacion_uo
+  ADD CONSTRAINT tplanificacion_uo_fk1 FOREIGN KEY (id_uo)
+REFERENCES orga.tuo(id_uo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+/***********************************F-DEP-YAC-SIGEFO-0-10/05/2017*****************************************/
+
 /***********************************I-DEP-JUAN-SIGEFO-0-16/05/2017*****************************************/
 select pxp.f_insert_testructura_gui ('CACO', 'SIGEFO');
 /***********************************F-DEP-JUAN-SIGEFO-0-16/05/2017*****************************************/

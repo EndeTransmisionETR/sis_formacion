@@ -39,6 +39,24 @@ class ACTCurso extends ACTbase{
 		$this->res=$this->objFunc->eliminarCurso($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+    function listarPaisLugar(){
+        $this->objParam->defecto('ordenacion','lug.id_lugar');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+
+
+        if ($this->objParam->getParametro('tipo') != '') {
+            $this->objParam->addFiltro("lugp.tipo  in (''". $this->objParam->getParametro('tipo') . "'')");
+        }
+        if ($this->objParam->getParametro('id_lugar_padre') != '') {
+            $this->objParam->addFiltro("lugp.id_lugar  =". $this->objParam->getParametro('id_lugar_padre') );
+        }
+
+        $this->objFunc=$this->create('MODCurso');
+        $this->res=$this->objFunc->listarPaisLugar();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

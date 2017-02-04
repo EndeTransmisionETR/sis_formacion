@@ -45,6 +45,8 @@ class MODPlanificacion extends MODbase{
         $this->captura('id_competencias','varchar');
         $this->captura('desc_proveedores','varchar');
         $this->captura('id_proveedores','varchar');
+        $this->captura('id_uo','varchar');
+        $this->captura('desc_uo','varchar');
 
         //Ejecuta la instruccion
 		$this->armarConsulta();
@@ -72,6 +74,7 @@ class MODPlanificacion extends MODbase{
         $this->setParametro('id_competencias', 'id_competencias', 'varchar');
         $this->setParametro('id_cargos', 'id_cargos', 'varchar');
         $this->setParametro('id_proveedores', 'id_proveedores', 'varchar');
+        $this->setParametro('id_uo', 'id_uo', 'varchar');
 
 
 
@@ -104,6 +107,7 @@ class MODPlanificacion extends MODbase{
         $this->setParametro('id_cargos', 'id_cargos', 'varchar');
         $this->setParametro('id_competencias', 'id_competencias', 'varchar');
         $this->setParametro('id_proveedores', 'id_proveedores', 'varchar');
+        $this->setParametro('id_uo', 'id_uo', 'varchar');
 
 
         //Ejecuta la instruccion
@@ -150,8 +154,30 @@ class MODPlanificacion extends MODbase{
         $this->captura('nombre','varchar');
 
         $this->captura('identificador','int4');
+        $this->captura('id_uo_padre','int4');
 
-        $this->captura('gerencia','varchar');
+        $this->captura('nombre_unidad_padre','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    function listarGerenciauo(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sigefo.ft_planificacion_sel';
+        $this->transaccion='SIGEFO_SIGEFOCGU_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+
+       // $this->setParametro('tipo','tipo','varchar');
+       // $this->setParametro('fecha','fecha','date');
+       // $this->setParametro('id_uo','id_uo','integer');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_uo','int4');
         $this->captura('nombre_unidad','varchar');
 
         //Ejecuta la instruccion
