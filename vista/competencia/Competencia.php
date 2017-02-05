@@ -68,7 +68,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
 
                 {
-//            TODO: Creando el combo del tipo de competencia
                     config: {
                         name: 'tipo',
                         fieldLabel: 'Tipo',

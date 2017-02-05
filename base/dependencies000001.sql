@@ -275,3 +275,9 @@ NOT DEFERRABLE;
 /***********************************I-DEP-JUAN-SIGEFO-0-16/05/2017*****************************************/
 select pxp.f_insert_testructura_gui ('CACO', 'SIGEFO');
 /***********************************F-DEP-JUAN-SIGEFO-0-16/05/2017*****************************************/
+/***********************************I-DEP-YAC-SIGEFO-0-17/05/2017*****************************************/
+
+select pxp.f_insert_testructura_gui ('SIGEFOPAR', 'SIGEFO');
+select pxp.f_insert_testructura_gui ('SIGEFOCO', 'SIGEFOPAR');
+select pxp.f_insert_testructura_gui ('CACO', 'SIGEFOPAR');
+/***********************************F-DEP-YAC-SIGEFO-0-17/05/2017*****************************************/

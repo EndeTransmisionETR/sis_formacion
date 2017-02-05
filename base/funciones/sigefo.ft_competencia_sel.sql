@@ -46,7 +46,7 @@ BEGIN
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select
+			v_consulta:='select DISTINCT
 						sigefoco.id_competencia,
 						tc.descripcion as tipo,
 						sigefoco.estado_reg,
@@ -70,7 +70,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+				RAISE NOTICE '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -181,6 +181,7 @@ BEGIN
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
+
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -263,7 +264,7 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(sigefoco.id_competencia)
+			v_consulta:='select count(DISTINCT sigefoco.id_competencia)
 					    from sigefo.tcompetencia sigefoco
 					    inner join segu.tusuario usu1 on usu1.id_usuario = sigefoco.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefoco.id_usuario_mod

@@ -79,7 +79,7 @@ where pco.id_planificacion=sigefop.id_planificacion)::varchar as desc_competenci
 									(select      array_to_string( array_agg(co.id_competencia), '','' )
 from sigefo.tplanificacion_competencia pco join sigefo.tcompetencia co on pco.id_competencia = co.id_competencia
 where pco.id_planificacion=sigefop.id_planificacion)::varchar as id_competencias,
-									(select  array_to_string( array_agg(prov.rotulo_comercial), ''<br>'' )
+									(select  array_to_string( array_agg(prov.desc_proveedor), ''<br>'' )
 from sigefo.tplanificacion_proveedor pp join param.vproveedor prov ON pp.id_proveedor=prov.id_proveedor
 where pp.id_planificacion=sigefop.id_planificacion)::varchar as desc_proveedores,
 									(select  array_to_string( array_agg(pp.id_proveedor), '','' )
@@ -152,8 +152,16 @@ where pp.id_planificacion=sigefop.id_planificacion)::varchar as id_proveedores,
         where uo.gerencia=''si'' and ';
 
         --Definicion de la respuesta
-        v_consulta:=v_consulta || v_parametros.filtro || ' order by uo.id_nivel_organizacional';
-        RAISE NOTICE '%', v_consulta;
+        v_consulta:=v_consulta || v_parametros.filtro;
+        v_consulta:=
+        v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+        v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+
+        --v_consulta:=v_consulta || v_parametros.filtro || ' order by uo.nombre_unidad';
+        --RAISE NOTICE '%', v_consulta;
+       -- RAISE EXCEPTION 'yac erro ';
+
         --Devuelve la respuesta
         RETURN v_consulta;
 

@@ -164,12 +164,10 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
 
-                // TODO: El guardado de los datos lo realiza en codificacion,
-                // TODO: Preguntar a remsi.
                 {
                     config: {
                         name: 'cod_criterio',
-                        fieldLabel: 'Criterio',
+                        fieldLabel: 'Criterios de evaluación',
                         allowBlank: false,
                         emptyText: 'Criterios...',
                         blankText: 'Debe seleccionar un criterio',
@@ -217,7 +215,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
 
                 {
-//                    TODO:realizatr los metodos en la en el controlador , en el modelo y en la funcion de postgres
                     config: {
                         name: 'id_uo',
                         fieldLabel: 'Gerencia',
@@ -230,7 +227,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             root: 'datos',
                             sortInfo: {
                                 field: 'nombre_unidad',
-                                direction: 'DESC'
+                                direction: 'ASC'
                             },
                             totalProperty: 'total',
                             fields: ['id_uo', 'nombre_unidad'],
@@ -263,7 +260,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
                 {
-//            TODO: Cargado de los cargos
                     config: {
                         name: 'id_cargos',
                         fieldLabel: 'Cargo',
@@ -276,7 +272,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             root: 'datos',
                             sortInfo: {
                                 field: 'nombre',
-                                direction: 'DESC'
+                                direction: 'ASC'
                             },
                             totalProperty: 'total',
                             fields: ['id_cargo', 'nombre'],
@@ -321,7 +317,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             root: 'datos',
                             sortInfo: {
                                 field: 'competencia',
-                                direction: 'DESC'
+                                direction: 'ASC'
                             },
                             totalProperty: 'total',
                             fields: ['id_competencia', 'competencia'],
@@ -365,17 +361,17 @@ header("content-type: text/javascript; charset=UTF-8");
                             id: 'id_proveedor',
                             root: 'datos',
                             sortInfo: {
-                                field: 'rotulo_comercial',
-                                direction: 'DESC'
+                                field: 'desc_proveedor',
+                                direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_proveedor', 'rotulo_comercial'],
+                            fields: ['id_proveedor', 'desc_proveedor'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'rotulo_comercial'}
+                            baseParams: {par_filtro: 'desc_proveedor'}
                         }),
                         valueField: 'id_proveedor',
-                        displayField: 'rotulo_comercial',
-                        gdisplayField: 'rotulo_comercial',
+                        displayField: 'desc_proveedor',
+                        gdisplayField: 'desc_proveedor',
                         hiddenName: 'id_proveedor',
                         forceSelection: true,
                         typeAhead: false,

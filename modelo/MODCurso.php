@@ -48,7 +48,7 @@ class MODCurso extends MODbase{
 		$this->captura('gestion','int4');
 		$this->captura('nombre','varchar');
 		$this->captura('nombre_pais','varchar');
-		$this->captura('rotulo_comercial','varchar');
+		$this->captura('desc_proveedor','varchar');
 		
 		$this->captura('id_competencias','varchar');
 		$this->captura('competencias','varchar');
