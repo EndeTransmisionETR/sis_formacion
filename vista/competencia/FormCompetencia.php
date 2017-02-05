@@ -24,8 +24,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 
             this.addButton('btnCargosCompetencia',
             {
-                text: 'Guardar curso competencia',
-                iconCls: 'blist',
+                text: 'Asignar competencia',
+                iconCls: 'bsave',
                 disabled: true,
                 handler: this.btnCargosCompetencia,
                 tooltip: 'Guardar relacion de cargos y competencias'

@@ -111,7 +111,7 @@ class ACTCompetencia extends ACTbase
         $this->res = $this->objFunc->eliminarCompetencia($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
- function insertarCargoCompetencia(){
+    function insertarCargoCompetencia(){
     	
     		$this->objFunc=$this->create('MODCompetencia');	
 			$this->res=$this->objFunc->insertarCargoCompetencia($this->objParam);			
@@ -135,6 +135,11 @@ class ACTCompetencia extends ACTbase
 			
 			$this->res=$this->objFunc->listarCargo($this->objParam);
 		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	function eliminarCargoCompetencia(){
+		$this->objFunc=$this->create('MODCompetencia');	
+		$this->res=$this->objFunc->eliminarCargoCompetencia($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 

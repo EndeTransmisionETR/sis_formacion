@@ -21,7 +21,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 		this.iniciarEventos();
 		this.addButton('btnCompetencia',
             {
-                text: 'Asociar_competencia',
+                text: 'Asignar_competencia',
                 iconCls: 'blist',
                 disabled: true,
                 handler: this.onBtnCompetencia,
@@ -197,7 +197,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config: {
-				name: 'nombre',
+				name: 'nombre_cargo',
 				fieldLabel: 'Nombre Cargo',
 				allowBlank: false,
 				emptyText: 'Elija una opción...',
@@ -214,10 +214,10 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 					remoteSort: true,
 					baseParams: {par_filtro: 'cargo.nombre'}
 				}),
-				valueField: 'nombre',
-				displayField: 'nombre',
-				gdisplayField: 'nombre',
-				hiddenName: 'nombre',
+				valueField: 'nombre_cargo',
+				displayField: 'nombre_cargo',
+				gdisplayField: 'nombre_cargo',
+				hiddenName: 'nombre_cargo',
 				forceSelection: false,
 				typeAhead: false,
 				triggerAction: 'all',
@@ -229,7 +229,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 200,
 				minChars: 2,
 				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['nombre']);
+					return String.format('{0}', record.data['nombre_cargo']);
 				}
 			},
 			type: 'ComboBox',
@@ -431,7 +431,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 	tam_pag:50,	
 	title:'Cargo',
 	ActSave:'../../sis_organigrama/control/Cargo/insertarCargo',
-	ActDel:'../../sis_organigrama/control/Cargo/eliminarCargo',
+	//ActDel:'../../sis_formacion/control/Competencia/eliminarCargoCompetencia',
 	ActList:'../../sis_formacion/control/Competencia/listarCargo',
 	id_store:'id_cargo',
 	fields: [
@@ -443,7 +443,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_temporal_cargo', type: 'numeric'},
 		{name:'id_escala_salarial', type: 'numeric'},
 		{name:'codigo', type: 'string'},
-		{name:'nombre', type: 'string'},
+		{name:'nombre_cargo', type: 'string'},
 		{name:'nombre_tipo_contrato', type: 'string'},
 		{name:'codigo_tipo_contrato', type: 'string'},
 		{name:'nombre_escala', type: 'string'},
@@ -463,7 +463,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_cargo',
+		field: 'nombre_cargo',
 		direction: 'ASC'
 	},
 	
