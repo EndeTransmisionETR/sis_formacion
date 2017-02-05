@@ -1,3 +1,4 @@
+--------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION sigefo.ft_competencia_ime (
   p_administrador integer,
@@ -185,6 +186,36 @@ BEGIN
  	#AUTOR:		admin	
  	#FECHA:		04-05-2017 19:30:13
 	***********************************/
+    
+        
+	/*********************************    
+ 	#TRANSACCION:  'SIGEFO_ECCOMPETENCIA'
+ 	#DESCRIPCION:	Eliminacion de CARGO COMPETENCIA
+ 	#AUTOR:		JUAN	
+ 	#FECHA:		17-05-2017 20:25:54
+	***********************************/
+
+	elsif(p_transaccion='SIGEFO_ECCOMPETENCIA')then
+
+		begin
+			--Sentencia de la eliminacion
+            j_id_competencias := v_parametros.cod_competencias;
+            FOR j_competencias IN (SELECT * FROM json_array_elements(j_id_competencias) ) LOOP
+			  delete from sigefo.tcargo_competencia
+              where id_cargo=v_parametros.id_cargo and id_competencia= (j_competencias ->> 'cod_competencia')::INTEGER;
+            END LOOP;  
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','cargo competencia eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_cargo',v_parametros.id_cargo::varchar);
+              
+            --Devuelve la respuesta
+            
+            --RAISE NOTICE 'preuba cargo % ', v_parametros.id_cargo;
+
+           -- RAISE EXCEPTION 'error juan';
+            return v_resp;
+
+		end;
 
 	elsif(p_transaccion='SIGEFO_SIGEFOCO_ELI')then
 
@@ -224,4 +255,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
