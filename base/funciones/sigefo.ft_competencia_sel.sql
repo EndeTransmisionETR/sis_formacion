@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION sigefo.ft_competencia_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -46,7 +48,7 @@ BEGIN
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select DISTINCT
+			v_consulta:='select
 						sigefoco.id_competencia,
 						tc.descripcion as tipo,
 						sigefoco.estado_reg,
@@ -70,7 +72,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-				RAISE NOTICE '%',v_consulta;
+
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -95,7 +97,7 @@ BEGIN
 						cargo.id_temporal_cargo,
 						cargo.id_escala_salarial,
 						cargo.codigo,
-						cargo.nombre,
+						cargo.nombre as nombre_cargo,
 						cargo.fecha_ini,
 						cargo.estado_reg,
 						cargo.fecha_fin,
@@ -137,9 +139,13 @@ BEGIN
 					v_consulta := v_consulta || ' and (cargo.fecha_fin > ''' || v_parametros.fecha || ''' or cargo.fecha_fin is null) ';
 				end if;
 			end if;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            
+            
+            
+			v_consulta:=v_consulta||' order by ' || v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
+            raise NOTICE '%', v_consulta;
 			return v_consulta;
 
         	end;
@@ -180,7 +186,6 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
 
 			--Devuelve la respuesta
 			return v_consulta;
@@ -264,7 +269,7 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(DISTINCT sigefoco.id_competencia)
+			v_consulta:='select count(sigefoco.id_competencia)
 					    from sigefo.tcompetencia sigefoco
 					    inner join segu.tusuario usu1 on usu1.id_usuario = sigefoco.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefoco.id_usuario_mod
