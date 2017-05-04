@@ -68,3 +68,9 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 /***********************************F-DEP-YAC-SIGEFO-0-04/05/2017*****************************************/
+/***********************************I-DEP-YAC-SIGEFO-0-05/05/2017*****************************************/
+
+select pxp.f_insert_testructura_gui ('SIGEFOP', 'SIGEFO');
+select pxp.f_insert_testructura_gui ('SIGEFOCO', 'SIGEFO');
+
+/***********************************F-DEP-YAC-SIGEFO-0-05/05/2017*****************************************/

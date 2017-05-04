@@ -9,3 +9,8 @@ select pxp.f_insert_tgui ('SISTEMA DE GESTIÓN DE LA FORMACIÓN', '', 'SIGEFO', 
 -- TODO: Falta colocar los datos del catalogo
 
 /********************************************F-DAT-RAC-SP-0-15/01/2013********************************************/
+/********************************************I-DAT-YAC-SP-0-05/05/2017********************************************/
+select pxp.f_insert_tgui ('Planificación', 'Planificación', 'SIGEFOP', 'si', 1, 'sis_formacion/vista/planificacion/Planificacion.php', 2, '', 'Planificacion', 'SIGEFO');
+select pxp.f_insert_tgui ('Competencias', 'Competencias', 'SIGEFOCO', 'si', 2, 'sis_formacion/vista/competencia/Competencia.php', 2, '', 'Competencia', 'SIGEFO');
+
+/********************************************F-DAT-YAC-SP-0-05/05/2017********************************************/
