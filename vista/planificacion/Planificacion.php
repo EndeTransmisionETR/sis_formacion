@@ -335,28 +335,28 @@ Phx.vista.Planificacion=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config: {
-                name: 'id_competencias',
+                name: 'id_competencia',
                 fieldLabel: 'Competencias',
                 allowBlank: false,
                 emptyText: 'Competencias...',
                 blankText: 'Debe seleccionar una competencia',
                 store: new Ext.data.JsonStore({
-                    url: '../../sis_parametros/control/Gestion/listarGestion',
-                    id: 'id_gestion',
+                    url: '../../sis_formacion/control/Competencia/listarCompetencia',
+                    id: 'id_competencia',
                     root: 'datos',
                     sortInfo: {
-                        field: 'gestion',
+                        field: 'competencia',
                         direction: 'DESC'
                     },
                     totalProperty: 'total',
-                    fields: ['id_gestion','gestion'],
+                    fields: ['id_competencia','competencia'],
                     remoteSort: true,
-                    baseParams: {par_filtro: 'gestion'}
+                    baseParams: {par_filtro: 'competencia'}
                 }),
-                valueField: 'id_gestion',
-                displayField: 'gestion',
-                gdisplayField: 'gestion',
-                hiddenName: 'id_gestion',
+                valueField: 'id_competencia',
+                displayField: 'competencia',
+                gdisplayField: 'competencia',
+                hiddenName: 'id_competencia',
                 forceSelection: true,
                 typeAhead: false,
                 triggerAction: 'all',
