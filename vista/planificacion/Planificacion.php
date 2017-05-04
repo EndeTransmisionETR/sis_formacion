@@ -62,7 +62,7 @@ Phx.vista.Planificacion=Ext.extend(Phx.gridInterfaz,{
 				mode: 'remote',
 				pageSize: 15,
 				queryDelay: 1000,
-				anchor: '30%',
+				anchor: '60%',
 				gwidth: 150,
 				minChars: 2,
 				renderer : function(value, p, record) {
@@ -135,7 +135,6 @@ Phx.vista.Planificacion=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-
         {
             config:{
                 name: 'horas_previstas',
@@ -259,7 +258,170 @@ Phx.vista.Planificacion=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		}
+		},
+        {
+//            TODO: Preguntar a remsi por que no funciona el multi combo, cuando lo pongo AwesomeCombo
+            config : {
+                name : 'cod_criterio',
+                fieldLabel : 'Criterio',
+                anchor : '90%',
+                tinit : false,
+                allowBlank : false,
+                origen : 'CATALOGO',
+                gdisplayField : 'criterio',
+                gwidth : 200,
+                anchor : '80%',
+                baseParams : {
+                    cod_subsistema : 'SIGEFO',
+                    catalogo_tipo : 'tplanificacion_critico'
+                },
+                renderer : function(value, p, record) {
+                    return String.format('{criterio}', record.data['nombre']);
+                }
+            },
+            type : 'ComboRec',
+            id_grupo : 0,
+            filters : {
+                pfiltro : 'criterio',
+                type : 'string'
+            },
+            grid : true,
+            form : true
+        },
+        {
+//            TODO: Cargar los datos en el combo box de acargo de acuerdo a las OUs
+            config: {
+                name: 'id_cargo',
+                fieldLabel: 'Cargo',
+                allowBlank: false,
+                emptyText: 'Cargo...',
+                blankText: 'Debe seleccionar un cargo',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_formacion/control/Planificacion/listarCargo',
+                    id: 'id_cargo',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_cargo','nombre'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'nombre'}
+                }),
+                valueField: 'id_cargo',
+                displayField: 'nombre',
+                gdisplayField: 'nombre',
+                hiddenName: 'id_cargo',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '60%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['nombre']);
+                }
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'nombre',type: 'string'},
+            grid: true,
+            form: true
+        },
+        {
+            config: {
+                name: 'id_competencias',
+                fieldLabel: 'Competencias',
+                allowBlank: false,
+                emptyText: 'Competencias...',
+                blankText: 'Debe seleccionar una competencia',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Gestion/listarGestion',
+                    id: 'id_gestion',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'gestion',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_gestion','gestion'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'gestion'}
+                }),
+                valueField: 'id_gestion',
+                displayField: 'gestion',
+                gdisplayField: 'gestion',
+                hiddenName: 'id_gestion',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '60%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['gestion']);
+                }
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'movtip.nombre',type: 'string'},
+            grid: true,
+            form: true
+        },
+        {
+            config: {
+                name: 'id_proveedor',
+                fieldLabel: 'Proveedores',
+                allowBlank: false,
+                emptyText: 'Proveedores...',
+                blankText: 'Debe seleccionar un proveedor',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Proveedor/listarProveedorCombos',
+                    id: 'id_proveedor',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'rotulo_comercial',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_proveedor','rotulo_comercial'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'rotulo_comercial'}
+                }),
+                valueField: 'id_proveedor',
+                displayField: 'rotulo_comercial',
+                gdisplayField: 'rotulo_comercial',
+                hiddenName: 'id_proveedor',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '60%',
+                gwidth: 150,
+                minChars: 2,
+                enableMultiSelect: true,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['rotulo_comercial']);
+                }
+            },
+            type: 'AwesomeCombo',
+            id_grupo: 0,
+            filters: {pfiltro: 'movtip.rotulo_comercial',type: 'string'},
+            grid: true,
+            form: true
+        },
 	],
 	tam_pag:50,	
 	title:'Planificación',
@@ -283,8 +445,7 @@ Phx.vista.Planificacion=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
-		
+		{name:'usr_mod', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_planificacion',

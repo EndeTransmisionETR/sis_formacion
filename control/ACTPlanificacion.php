@@ -39,6 +39,27 @@ class ACTPlanificacion extends ACTbase{
 		$this->res=$this->objFunc->eliminarPlanificacion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+
+    function listarCargo(){
+        $this->objParam->defecto('ordenacion','id_cargo');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+
+        if ($this->objParam->getParametro('id_uo') != '') {
+            $this->objParam->addFiltro("cargo.id_uo = ". $this->objParam->getParametro('id_uo'));
+        }
+
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODPlanificacion','listarCargo');
+        } else{
+            $this->objFunc=$this->create('MODPlanificacion');
+
+            $this->res=$this->objFunc->listarCargo($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

@@ -108,6 +108,37 @@ class MODPlanificacion extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+
+    function listarCargo(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sigefo.f_cargo_sel';
+        $this->transaccion='SIGEFO_CARGO_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+       // $this->setParametro('tipo','tipo','varchar');
+       // $this->setParametro('fecha','fecha','date');
+       // $this->setParametro('id_uo','id_uo','integer');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_cargo','int4');
+        $this->captura('id_uo','int4');
+        $this->captura('id_tipo_contrato','int4');
+        $this->captura('id_lugar','int4');
+        $this->captura('nombre','varchar');
+
+        $this->captura('identificador','int4');
+
+        $this->captura('gerencia','varchar');
+        $this->captura('nombre_unidad','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>
