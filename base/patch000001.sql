@@ -69,3 +69,10 @@ CREATE TABLE sigefo.tplanificacion_proveedor (
 WITH (oids = false);
 
 /***********************************F-SCP-YAC-SIGEFO-0-05/05/2017****************************************/
+
+/***********************************I-SCP-YAC-SIGEFO-0-08/05/2017****************************************/
+
+ALTER TABLE sigefo.tplanificacion_critico
+  RENAME TO tplanificacion_criterio;
+
+/***********************************F-SCP-YAC-SIGEFO-0-08/05/2017****************************************/

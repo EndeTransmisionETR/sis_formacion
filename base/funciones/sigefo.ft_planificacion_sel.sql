@@ -56,11 +56,39 @@ BEGIN
 						sigefop.id_usuario_mod,
 						sigefop.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						tg.gestion,
+						(SELECT
+  array_to_string( array_agg(tg.nombre), ''<br>'' )
+FROM orga.tcargo tg join sigefo.tplanificacion_cargo pc ON pc.id_cargo=tg.id_cargo
+where pc.id_planificacion=sigefop.id_planificacion)::varchar as desc_cargos,
+						(SELECT
+  array_to_string( array_agg(tg.id_cargo), '','' )
+FROM orga.tcargo tg join sigefo.tplanificacion_cargo pc ON pc.id_cargo=tg.id_cargo
+where pc.id_planificacion=sigefop.id_planificacion)::varchar as id_cargos,
+									(select      array_to_string( array_agg(c.codigo), '','' )
+from sigefo.tplanificacion_criterio pc join param.tcatalogo c on c.codigo = pc.cod_criterio
+where pc.id_planificacion=sigefop.id_planificacion)::varchar as cod_criterio,
+									(select      array_to_string( array_agg(c.descripcion), ''<br>'' )
+from sigefo.tplanificacion_criterio pc join param.tcatalogo c on c.codigo = pc.cod_criterio
+where pc.id_planificacion=sigefop.id_planificacion)::varchar as desc_criterio,
+								(select      array_to_string( array_agg(co.competencia), ''<br>'' )
+from sigefo.tplanificacion_competencia pco join sigefo.tcompetencia co on pco.id_competencia = co.id_competencia
+where pco.id_planificacion=sigefop.id_planificacion)::varchar as desc_competencia,
+									(select      array_to_string( array_agg(co.id_competencia), '','' )
+from sigefo.tplanificacion_competencia pco join sigefo.tcompetencia co on pco.id_competencia = co.id_competencia
+where pco.id_planificacion=sigefop.id_planificacion)::varchar as id_competencias,
+									(select  array_to_string( array_agg(prov.rotulo_comercial), ''<br>'' )
+from sigefo.tplanificacion_proveedor pp join param.vproveedor prov ON pp.id_proveedor=prov.id_proveedor
+where pp.id_planificacion=sigefop.id_planificacion)::varchar as desc_proveedores,
+									(select  array_to_string( array_agg(pp.id_proveedor), '','' )
+from sigefo.tplanificacion_proveedor pp
+where pp.id_planificacion=sigefop.id_planificacion)::varchar as id_proveedores
 						from sigefo.tplanificacion sigefop
 						inner join segu.tusuario usu1 on usu1.id_usuario = sigefop.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefop.id_usuario_mod
-				        where  ';
+						inner join param.tgestion tg on sigefop.id_gestion=tg.id_gestion
+				  where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;

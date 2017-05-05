@@ -29,7 +29,7 @@ DECLARE
   v_id_planificacion  INTEGER;
   va_cod_criterios    VARCHAR [];
   v_cod_criterio      VARCHAR;
-  va_id_competencias   VARCHAR [];
+  va_id_competencias  VARCHAR [];
   v_id_competencia    INTEGER;
   va_id_cargos        VARCHAR [];
   v_id_cargo          INTEGER;
@@ -88,13 +88,13 @@ BEGIN
       RETURNING id_planificacion
         INTO v_id_planificacion;
 
-      -- Insertando
+      -- Insertando los criterios
 
       va_cod_criterios := string_to_array(v_parametros.cod_criterio, ',');
 
       FOREACH v_cod_criterio IN ARRAY va_cod_criterios
       LOOP
-        INSERT INTO sigefo.tplanificacion_critico (
+        INSERT INTO sigefo.tplanificacion_criterio (
           id_usuario_reg,
           fecha_reg,
           estado_reg,
@@ -219,6 +219,124 @@ BEGIN
           id_usuario_ai        = v_parametros._id_usuario_ai,
           usuario_ai           = v_parametros._nombre_usuario_ai
         WHERE id_planificacion = v_parametros.id_planificacion;
+
+        -- PLANIFICACION CRITERIO
+
+        va_cod_criterios := string_to_array(v_parametros.cod_criterio, ',');
+
+        -- Eliminando
+        DELETE FROM sigefo.tplanificacion_criterio pc
+        WHERE
+          pc.id_planificacion = v_parametros.id_planificacion;
+
+        -- Agregando
+        FOREACH v_cod_criterio IN ARRAY va_cod_criterios
+        LOOP
+          INSERT INTO sigefo.tplanificacion_criterio (
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_planificacion,
+            cod_criterio
+          )
+          VALUES (
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+            v_parametros.id_planificacion,
+            v_cod_criterio :: VARCHAR
+          );
+        END LOOP;
+
+        -- PLANIFICACION CARGOS
+        -- Eliminando
+        DELETE FROM sigefo.tplanificacion_cargo pca
+        WHERE pca.id_planificacion = v_parametros.id_planificacion;
+        -- Insertando
+        va_id_cargos := string_to_array(v_parametros.id_cargos, ',');
+
+        FOREACH v_id_cargo IN ARRAY va_id_cargos
+        LOOP
+          INSERT INTO sigefo.tplanificacion_cargo (
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_planificacion,
+            id_cargo
+          )
+          VALUES (
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+            v_parametros.id_planificacion,
+            v_id_cargo :: INTEGER
+          );
+
+        END LOOP;
+
+        -- PLANIFICACION COMPETENCIAS
+
+        -- Eliminando
+        DELETE FROM sigefo.tplanificacion_competencia pco
+        WHERE pco.id_planificacion = v_parametros.id_planificacion;
+
+        -- Insertanto
+        va_id_competencias := string_to_array(v_parametros.id_competencias, ',');
+
+        FOREACH v_id_competencia IN ARRAY va_id_competencias
+        LOOP
+          INSERT INTO sigefo.tplanificacion_competencia (
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_planificacion,
+            id_competencia
+          )
+          VALUES (
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+            v_parametros.id_planificacion,
+            v_id_competencia :: INTEGER
+          );
+
+        END LOOP;
+
+        -- PLANIFICACION PROVEEDORES
+
+        -- Eliminando
+        DELETE FROM sigefo.tplanificacion_proveedor pp
+        WHERE pp.id_planificacion = v_parametros.id_planificacion;
+
+        -- Insertando
+        va_id_proveedores := string_to_array(v_parametros.id_proveedores, ',');
+
+        FOREACH v_id_proveedor IN ARRAY va_id_proveedores
+        LOOP
+
+          INSERT INTO sigefo.tplanificacion_proveedor (
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_planificacion,
+            id_proveedor
+          ) VALUES (
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+            v_parametros.id_planificacion,
+            v_id_proveedor :: INTEGER
+          );
+
+        END LOOP;
 
         --Definicion de la respuesta
         v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'Planificación modificado(a)');

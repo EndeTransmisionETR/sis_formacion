@@ -63,7 +63,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         pageSize: 15,
                         queryDelay: 1000,
                         anchor: '60%',
-                        gwidth: 150,
+                        gwidth: 50,
                         minChars: 2,
                         renderer: function (value, p, record) {
                             return String.format('{0}', record.data['gestion']);
@@ -71,7 +71,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.nombre', type: 'string'},
+                    filters: {pfiltro: 'tg.gestion', type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -81,7 +81,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fieldLabel: 'Nombre planificación',
                         allowBlank: false,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 150,
                         maxLength: 150
                     },
                     type: 'TextField',
@@ -96,7 +96,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fieldLabel: 'Contenido basico',
                         allowBlank: true,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 150,
                         maxLength: 5000
                     },
                     type: 'TextArea',
@@ -111,7 +111,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fieldLabel: 'Necesidad',
                         allowBlank: true,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 150,
                         maxLength: 5000
                     },
                     type: 'TextArea',
@@ -151,119 +151,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
 
-                {
-                    config: {
-                        name: 'estado_reg',
-                        fieldLabel: 'Estado Reg.',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 10
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'sigefop.estado_reg', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-
-                {
-                    config: {
-                        name: 'fecha_reg',
-                        fieldLabel: 'Fecha creación',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'sigefop.fecha_reg', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-                {
-                    config: {
-                        name: 'usuario_ai',
-                        fieldLabel: 'Funcionaro AI',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 300
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'sigefop.usuario_ai', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-                {
-                    config: {
-                        name: 'usr_reg',
-                        fieldLabel: 'Creado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'usu1.cuenta', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-                {
-                    config: {
-                        name: 'id_usuario_ai',
-                        fieldLabel: 'Creado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'sigefop.id_usuario_ai', type: 'numeric'},
-                    id_grupo: 1,
-                    grid: false,
-                    form: false
-                },
-                {
-                    config: {
-                        name: 'usr_mod',
-                        fieldLabel: 'Modificado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'usu2.cuenta', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-                {
-                    config: {
-                        name: 'fecha_mod',
-                        fieldLabel: 'Fecha Modif.',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'sigefop.fecha_mod', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
-                // TODO: El guardado de los datos lo raliza en codificacion,
+                // TODO: El guardado de los datos lo realiza en codificacion,
                 // TODO: Preguntar a remsi.
                 {
                     config: {
@@ -274,23 +162,25 @@ header("content-type: text/javascript; charset=UTF-8");
                         blankText: 'Debe seleccionar un criterio',
                         store: new Ext.data.JsonStore({
                             url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
-                            id: 'id_catalogo',
+                            id: 'codigo',
                             root: 'datos',
                             sortInfo: {
                                 field: 'descripcion',
                                 direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_catalogo', 'codigo', 'descripcion'],
+                            fields: ['codigo', 'descripcion'],
                             // turn on remote sorting
                             remoteSort: true,
-                            baseParams: {par_filtro: 'descripcion',cod_subsistema: 'SIGEFO',
-                                catalogo_tipo: 'tplanificacion_critico'}
+                            baseParams: {
+                                par_filtro: 'descripcion', cod_subsistema: 'SIGEFO',
+                                catalogo_tipo: 'tplanificacion_critico'
+                            }
                         }),
-                        valueField: 'id_catalogo',
+                        valueField: 'codigo',
                         displayField: 'descripcion',
                         gdisplayField: 'descripcion',
-                        hiddenName: 'id_catalogo',
+                        hiddenName: 'codigo',
                         forceSelection: true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -303,7 +193,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         minChars: 2,
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['criterio']);
+                            return String.format('{0}', (record.data['desc_criterio']) ? record.data['desc_criterio'] : '');
                         }
                     },
                     type: 'AwesomeCombo',
@@ -336,7 +226,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         valueField: 'id_cargo',
                         displayField: 'nombre',
                         gdisplayField: 'nombre',
-                        hiddenName: 'id_cargo',
+                        hiddenName: 'id_cargos',
                         forceSelection: true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -349,7 +239,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         minChars: 2,
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['nombre']);
+                            return String.format('{0}', (record.data['desc_cargos']) ? record.data['desc_cargos'] : '');
                         }
                     },
                     type: 'AwesomeCombo',
@@ -394,12 +284,12 @@ header("content-type: text/javascript; charset=UTF-8");
                         minChars: 2,
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['gestion']);
+                            return String.format('{0}', (record.data['desc_competencia']) ? record.data['desc_competencia'] : '');
                         }
                     },
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.nombre', type: 'string'},
+                    filters: {pfiltro: 'desc_competencia', type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -439,14 +329,127 @@ header("content-type: text/javascript; charset=UTF-8");
                         minChars: 2,
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['rotulo_comercial']);
+                            return String.format('{0}', (record.data['desc_proveedores']) ? record.data['desc_proveedores'] : '');
                         }
                     },
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.rotulo_comercial', type: 'string'},
+                    filters: {pfiltro: 'desc_proveedores', type: 'string'},
                     grid: true,
                     form: true
+                },
+                {
+                    config: {
+                        name: 'usuario_ai',
+                        fieldLabel: 'Funcionaro AI',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 300
+                    },
+                    type: 'TextField',
+                    filters: {pfiltro: 'sigefop.usuario_ai', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'usr_reg',
+                        fieldLabel: 'Creado por',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 4
+                    },
+                    type: 'Field',
+                    filters: {pfiltro: 'usu1.cuenta', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+
+                {
+                    config: {
+                        name: 'usr_mod',
+                        fieldLabel: 'Modificado por',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 4
+                    },
+                    type: 'Field',
+                    filters: {pfiltro: 'usu2.cuenta', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'fecha_mod',
+                        fieldLabel: 'Fecha Modif.',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        format: 'd/m/Y',
+                        renderer: function (value, p, record) {
+                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
+                        }
+                    },
+                    type: 'DateField',
+                    filters: {pfiltro: 'sigefop.fecha_mod', type: 'date'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'id_usuario_ai',
+                        fieldLabel: 'Creado por',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 4
+                    },
+                    type: 'Field',
+                    filters: {pfiltro: 'sigefop.id_usuario_ai', type: 'numeric'},
+                    id_grupo: 1,
+                    grid: false,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'estado_reg',
+                        fieldLabel: 'Estado Reg.',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 10
+                    },
+                    type: 'TextField',
+                    filters: {pfiltro: 'sigefop.estado_reg', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+
+                {
+                    config: {
+                        name: 'fecha_reg',
+                        fieldLabel: 'Fecha creación',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        format: 'd/m/Y',
+                        renderer: function (value, p, record) {
+                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
+                        }
+                    },
+                    type: 'DateField',
+                    filters: {pfiltro: 'sigefop.fecha_reg', type: 'date'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
                 },
             ],
             tam_pag: 50,
@@ -471,7 +474,16 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'id_usuario_mod', type: 'numeric'},
                 {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usr_reg', type: 'string'},
-                {name: 'usr_mod', type: 'string'}
+                {name: 'usr_mod', type: 'string'},
+                {name: 'gestion', type: 'string'},
+                'id_cargos',
+                'desc_cargos',
+                'cod_criterio',
+                'desc_criterio',
+                'id_competencias',
+                'desc_competencia',
+                'id_proveedores',
+                'desc_proveedores'
             ],
             sortInfo: {
                 field: 'id_planificacion',

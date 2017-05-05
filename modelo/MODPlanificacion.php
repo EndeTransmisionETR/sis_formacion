@@ -36,11 +36,20 @@ class MODPlanificacion extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
-		//Ejecuta la instruccion
+		$this->captura('gestion','int4');
+		$this->captura('desc_cargos','varchar');
+		$this->captura('id_cargos','varchar');
+		$this->captura('cod_criterio','varchar');
+		$this->captura('desc_criterio','varchar');
+        $this->captura('desc_competencia','varchar');
+        $this->captura('id_competencias','varchar');
+        $this->captura('desc_proveedores','varchar');
+        $this->captura('id_proveedores','varchar');
+
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		
+
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
@@ -91,7 +100,13 @@ class MODPlanificacion extends MODbase{
 		$this->setParametro('necesidad','necesidad','text');
 		$this->setParametro('horas_previstas','horas_previstas','int4');
 
-		//Ejecuta la instruccion
+        $this->setParametro('cod_criterio', 'cod_criterio', 'varchar');
+        $this->setParametro('id_cargos', 'id_cargos', 'varchar');
+        $this->setParametro('id_competencias', 'id_competencias', 'varchar');
+        $this->setParametro('id_proveedores', 'id_proveedores', 'varchar');
+
+
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
