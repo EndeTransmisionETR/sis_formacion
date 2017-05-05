@@ -74,3 +74,12 @@ select pxp.f_insert_testructura_gui ('SIGEFOP', 'SIGEFO');
 select pxp.f_insert_testructura_gui ('SIGEFOCO', 'SIGEFO');
 
 /***********************************F-DEP-YAC-SIGEFO-0-05/05/2017*****************************************/
+/***********************************I-DEP-YAC-SIGEFO-1-05/05/2017*****************************************/
+
+ALTER TABLE sigefo.tplanificacion_proveedor
+  ADD CONSTRAINT tplanificacion_proveedor_fk FOREIGN KEY (id_planificacion)
+REFERENCES sigefo.tplanificacion(id_planificacion)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+/***********************************F-DEP-YAC-SIGEFO-1-05/05/2017*****************************************/

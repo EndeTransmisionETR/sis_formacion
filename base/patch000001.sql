@@ -59,3 +59,13 @@ CREATE TABLE sigefo.tplanificacion_cargo (
 WITH (oids = false);
 
 /***********************************F-SCP-YAC-SIGEFO-0-04/05/2017****************************************/
+/***********************************I-SCP-YAC-SIGEFO-0-05/05/2017****************************************/
+
+CREATE TABLE sigefo.tplanificacion_proveedor (
+  id_planificacion INTEGER,
+  id_proveedor INTEGER
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+/***********************************F-SCP-YAC-SIGEFO-0-05/05/2017****************************************/
