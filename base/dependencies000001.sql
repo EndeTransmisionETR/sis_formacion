@@ -167,7 +167,7 @@ select pxp.f_insert_testructura_gui ('SIGEFOCU', 'SIGEFO');
 select pxp.f_delete_testructura_gui ('CUPL', 'SIGEFOCU');
 select pxp.f_insert_testructura_gui ('CUPL', 'SIGEFO');
 select pxp.f_delete_testructura_gui ('CUFU', 'CUPL');
-select pxp.f_insert_testructura_gui ('CUFU', 'SIGEFO'); 
+select pxp.f_insert_testructura_gui ('CUFU', 'SIGEFO');
 
 /***********************************F-DEP-JUAN-SIGEFO-0-08/05/2017*****************************************/
 
@@ -250,3 +250,6 @@ ALTER TABLE sigefo.tplanificacion_proveedor
 
 /***********************************F-DEP-JUAN-SIGEFO-0-09/05/2017*****************************************/
 
+/***********************************I-DEP-YAC-SIGEFO-1-09/05/2017*****************************************/
+select pxp.f_insert_testructura_gui ('CUR', 'SIGEFO');
+/***********************************F-DEP-YAC-SIGEFO-1-09/05/2017*****************************************/
