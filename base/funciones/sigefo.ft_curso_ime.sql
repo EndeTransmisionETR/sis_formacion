@@ -32,6 +32,15 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_curso	integer;
+    
+    --variables externas
+    va_id_competencias      varchar [];
+    v_id_competencia        integer;
+    va_id_funcionarios      varchar [];
+    v_id_funcionario        integer;
+    va_id_planificaciones   varchar [];
+    v_id_planificacion      integer;
+    
 			    
 BEGIN
 
@@ -91,10 +100,87 @@ BEGIN
 			v_parametros._id_usuario_ai,
 			null,
 			null
-							
-			
-			
 			)RETURNING id_curso into v_id_curso;
+
+ --Insertar curso competencia
+           va_id_competencias := string_to_array(v_parametros.id_competencias, ',');
+           
+      FOREACH v_id_competencia IN ARRAY va_id_competencias
+      LOOP
+        	insert into sigefo.tcurso_competencia(
+			id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_curso,
+			id_competencia
+            ) 
+            values(
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+			v_id_curso,
+            v_id_competencia :: INTEGER
+            );
+            
+      END LOOP;
+      -- Insertar curso funcionario
+                   va_id_funcionarios := string_to_array(v_parametros.id_funcionarios, ',');
+
+      FOREACH v_id_funcionario IN ARRAY va_id_funcionarios
+      LOOP
+        	insert into sigefo.tcurso_funcionario(
+			id_curso,
+			id_funcionario,
+			estado_reg,
+			fecha_reg,
+			usuario_ai,
+			id_usuario_reg,
+			id_usuario_ai,
+			fecha_mod,
+			id_usuario_mod
+          	) values(
+			v_id_curso,
+			v_id_funcionario:: INTEGER,
+			'activo',
+			now(),
+			v_parametros._nombre_usuario_ai,
+			p_id_usuario,
+			v_parametros._id_usuario_ai,
+			null,
+			null
+			);
+		 END LOOP; 
+         -- Insertar curso planificacion
+                va_id_planificaciones := string_to_array(v_parametros.id_planificaciones, ',');
+          FOREACH v_id_planificacion IN ARRAY va_id_planificaciones
+          LOOP
+        	--Sentencia de la insercion
+        	insert into sigefo.tcurso_planificacion(
+			id_curso,
+			id_planificacion,
+			estado_reg,
+			id_usuario_ai,
+			id_usuario_reg,
+			usuario_ai,
+			fecha_reg,
+			id_usuario_mod,
+			fecha_mod
+          	) values(
+			v_id_curso,
+            v_id_planificacion :: INTEGER,
+			'activo',
+			v_parametros._id_usuario_ai,
+			p_id_usuario,
+			v_parametros._nombre_usuario_ai,
+			now(),
+			null,
+			null
+			);
+		  END LOOP;
+      
+            
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Cursos almacenado(a) con exito (id_curso'||v_id_curso||')'); 
@@ -135,6 +221,85 @@ BEGIN
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai
 			where id_curso=v_parametros.id_curso;
+            
+     --Editar curso competencia
+        DELETE FROM sigefo.tcurso_competencia cc WHERE cc.id_curso = v_parametros.id_curso;
+           va_id_competencias := string_to_array(v_parametros.id_competencias, ',');
+      FOREACH v_id_competencia IN ARRAY va_id_competencias
+      LOOP
+        	insert into sigefo.tcurso_competencia(
+			id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_usuario_ai,
+            id_curso,
+			id_competencia
+            ) 
+            values(
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros._id_usuario_ai,
+			v_parametros.id_curso,
+            v_id_competencia :: INTEGER
+            );
+            
+      END LOOP;
+      -- Editar curso funcionario
+        DELETE FROM sigefo.tcurso_funcionario cf WHERE cf.id_curso = v_parametros.id_curso;
+                   va_id_funcionarios := string_to_array(v_parametros.id_funcionarios, ',');
+      FOREACH v_id_funcionario IN ARRAY va_id_funcionarios
+      LOOP
+        	insert into sigefo.tcurso_funcionario(
+			id_curso,
+			id_funcionario,
+			estado_reg,
+			fecha_reg,
+			usuario_ai,
+			id_usuario_reg,
+			id_usuario_ai,
+			fecha_mod,
+			id_usuario_mod
+          	) values(
+			v_parametros.id_curso,
+			v_id_funcionario:: INTEGER,
+			'activo',
+			now(),
+			v_parametros._nombre_usuario_ai,
+			p_id_usuario,
+			v_parametros._id_usuario_ai,
+			null,
+			null
+			);
+		 END LOOP; 
+         -- Editar curso planificacion
+         DELETE FROM sigefo.tcurso_planificacion cp WHERE cp.id_curso = v_parametros.id_curso;
+                va_id_planificaciones := string_to_array(v_parametros.id_planificaciones, ',');
+          FOREACH v_id_planificacion IN ARRAY va_id_planificaciones
+          LOOP
+        	insert into sigefo.tcurso_planificacion(
+			id_curso,
+			id_planificacion,
+			estado_reg,
+			id_usuario_ai,
+			id_usuario_reg,
+			usuario_ai,
+			fecha_reg,
+			id_usuario_mod,
+			fecha_mod
+          	) values(
+			v_parametros.id_curso,
+            v_id_planificacion :: INTEGER,
+			'activo',
+			v_parametros._id_usuario_ai,
+			p_id_usuario,
+			v_parametros._nombre_usuario_ai,
+			now(),
+			null,
+			null
+			);
+		  END LOOP;
+      
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Cursos modificado(a)'); 

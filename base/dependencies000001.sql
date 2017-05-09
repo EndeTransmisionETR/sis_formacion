@@ -171,3 +171,82 @@ select pxp.f_insert_testructura_gui ('CUFU', 'SIGEFO');
 
 /***********************************F-DEP-JUAN-SIGEFO-0-08/05/2017*****************************************/
 
+/***********************************I-DEP-JUAN-SIGEFO-0-09/05/2017*****************************************/
+ALTER TABLE sigefo.tcurso_competencia
+  DROP CONSTRAINT tcurso_competencia_fk RESTRICT;
+
+ALTER TABLE sigefo.tcurso_competencia
+  ADD CONSTRAINT tcurso_competencia_fk FOREIGN KEY (id_curso)
+    REFERENCES sigefo.tcurso(id_curso)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE sigefo.tcurso_planificacion
+  DROP CONSTRAINT tcurso_planificacion_fk RESTRICT;
+
+ALTER TABLE sigefo.tcurso_planificacion
+  ADD CONSTRAINT tcurso_planificacion_fk FOREIGN KEY (id_curso)
+    REFERENCES sigefo.tcurso(id_curso)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+ALTER TABLE sigefo.tcurso_funcionario
+  DROP CONSTRAINT tcurso_funcionario_fk RESTRICT;
+
+ALTER TABLE sigefo.tcurso_funcionario
+  ADD CONSTRAINT tcurso_funcionario_fk FOREIGN KEY (id_curso)
+    REFERENCES sigefo.tcurso(id_curso)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE sigefo.tplanificacion_criterio
+  DROP CONSTRAINT tplanificacion_critico_fk RESTRICT;
+
+ALTER TABLE sigefo.tplanificacion_criterio
+  ADD CONSTRAINT tplanificacion_critico_fk FOREIGN KEY (id_planificacion)
+    REFERENCES sigefo.tplanificacion(id_planificacion)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE sigefo.tplanificacion_competencia
+  DROP CONSTRAINT tplanificacion_competencia_fk RESTRICT;
+
+ALTER TABLE sigefo.tplanificacion_competencia
+  ADD CONSTRAINT tplanificacion_competencia_fk FOREIGN KEY (id_planificacion)
+    REFERENCES sigefo.tplanificacion(id_planificacion)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE sigefo.tplanificacion_cargo
+  DROP CONSTRAINT tplanificacion_cargo_fk RESTRICT;
+
+ALTER TABLE sigefo.tplanificacion_cargo
+  ADD CONSTRAINT tplanificacion_cargo_fk FOREIGN KEY (id_planificacion)
+    REFERENCES sigefo.tplanificacion(id_planificacion)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE sigefo.tplanificacion_proveedor
+  DROP CONSTRAINT tplanificacion_proveedor_fk RESTRICT;
+
+ALTER TABLE sigefo.tplanificacion_proveedor
+  ADD CONSTRAINT tplanificacion_proveedor_fk FOREIGN KEY (id_planificacion)
+    REFERENCES sigefo.tplanificacion(id_planificacion)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/***********************************F-DEP-JUAN-SIGEFO-0-09/05/2017*****************************************/
+

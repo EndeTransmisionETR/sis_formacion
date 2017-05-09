@@ -72,13 +72,44 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         g.gestion,
                         l.nombre,
-                        p.rotulo_comercial	
+                        p.rotulo_comercial,
+                        
+                        (select array_to_string( array_agg( cc.id_competencia), '','' ) 
+                        from sigefo.tcurso_competencia cc join sigefo.tcurso c on c.id_curso=cc.id_curso 
+                        where cc.id_curso=scu.id_curso)::VARCHAR as id_competencias,
+                        
+                        (select array_to_string( array_agg( co.competencia), ''<br>'' ) 
+                        from sigefo.tcurso_competencia cc join sigefo.tcurso c on c.id_curso=cc.id_curso 
+                        join sigefo.tcompetencia co on co.id_competencia=cc.id_competencia
+                        where cc.id_curso=scu.id_curso)::VARCHAR as competencias,
+                        
+                        (select array_to_string( array_agg( cp.id_planificacion), '','' ) 
+                        from sigefo.tcurso_planificacion cp join sigefo.tcurso c on c.id_curso=cp.id_curso 
+                        where cp.id_curso=scu.id_curso)::VARCHAR as id_planificaciones,
+                        
+                        (select array_to_string( array_agg( pl.nombre_planificacion), ''<br>'' ) 
+                        from sigefo.tcurso_planificacion cp join sigefo.tcurso c on c.id_curso=cp.id_curso 
+                        join sigefo.tplanificacion pl on pl.id_planificacion=cp.id_planificacion
+                        where cp.id_curso=scu.id_curso)::VARCHAR as competencias,
+                        
+                        (select array_to_string( array_agg( cf.id_funcionario), '','' ) 
+                        from sigefo.tcurso_funcionario cf join sigefo.tcurso c on c.id_curso=cf.id_curso 
+                        where cf.id_curso=scu.id_curso)::VARCHAR as id_funcionarios,
+                        
+                        (select array_to_string( array_agg(PERSON.nombre_completo2), ''<br>'' ) 
+                        from sigefo.tcurso_funcionario cf join sigefo.tcurso c on c.id_curso=cf.id_curso 
+                        join orga.tfuncionario FUNCIO on FUNCIO.id_funcionario=cf.id_funcionario
+                        join SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                        where cf.id_curso=scu.id_curso)::VARCHAR as funcionarios
 						from sigefo.tcurso scu
 						inner join segu.tusuario usu1 on usu1.id_usuario = scu.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = scu.id_usuario_mod
                         join param.tgestion g on g.id_gestion=scu.id_gestion
                         join param.tlugar l on l.id_lugar=scu.id_lugar
                         join param.tproveedor p on p.id_proveedor= scu.id_proveedor
+                        
+                        
+                        
 				        where  ';
 			
 			--Definicion de la respuesta

@@ -31,9 +31,11 @@ select param.f_import_tcatalogo ('insert','SIGEFO','Actitud','actitud','tipocomp
 
 
 /********************************************I-DAT-JUAN-SP-1-08/05/2017********************************************/
-select pxp.f_insert_tgui ('Curso competencia', 'Cursos', 'SIGEFOCU', 'si', 3, 'sis_formacion/vista/curso/FormCursoCompetencia.php', 2, '', 'FormCursoCompetencia', 'SIGEFO');
-select pxp.f_insert_tgui ('Curso planificación', 'Curso planificación', 'CUPL', 'si', 4, 'sis_formacion/vista/curso/FormCursoPlanificacion.php', 3, '', 'FormCursoPlanificacion', 'SIGEFO');
-select pxp.f_insert_tgui ('Curso funcionario', 'Curso funcionario', 'CUFU', 'si', 5, 'sis_formacion/vista/curso/FormCursoFuncionario.php', 4, '', 'FormCursoFuncionario', 'SIGEFO');
+
+select pxp.f_insert_tgui ('Curso competencia', 'Cursos', 'SIGEFOCU', 'no', 3, 'sis_formacion/vista/curso/FormCursoCompetencia.php', 2, '', 'FormCursoCompetencia', 'SIGEFO');
+select pxp.f_insert_tgui ('Curso planificación', 'Curso planificación', 'CUPL', 'no', 4, 'sis_formacion/vista/curso/FormCursoPlanificacion.php', 3, '', 'FormCursoPlanificacion', 'SIGEFO');
+select pxp.f_insert_tgui ('Curso funcionario', 'Curso funcionario', 'CUFU', 'no', 5, 'sis_formacion/vista/curso/FormCursoFuncionario.php', 4, '', 'FormCursoFuncionario', 'SIGEFO');
+select pxp.f_insert_tgui ('Curso', 'Curso', 'CUR', 'si', 5, 'sis_formacion/vista/curso/Curso.php', 2, '', 'Curso', 'SIGEFO');
 
 select param.f_import_tcatalogo_tipo ('insert','tipo_curso','SIGEFO','tcurso');
 select param.f_import_tcatalogo ('insert','SIGEFO','Seminario','tc_seminario','tipo_curso');

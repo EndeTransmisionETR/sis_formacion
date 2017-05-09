@@ -40,6 +40,53 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+		{
+			config: {
+				//enviar erreglo
+				name: 'id_planificaciones',
+				fieldLabel: 'Planificacion',
+				allowBlank: true,
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_formacion/control/Planificacion/listarPlanificacion',
+					id: 'id_planificacion',
+					root: 'datos',
+					sortInfo: {
+						field: 'nombre_planificacion',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_planificacion', 'nombre_planificacion'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'nombre_planificacion'}
+				}),
+				valueField: 'id_planificacion',
+				displayField: 'nombre_planificacion',
+				gdisplayField: 'nombre_planificacion',
+				hiddenName: 'id_planificacion',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '80%',
+				gwidth: 150,
+				minChars: 2,
+				//para multiples
+				enableMultiSelect: true,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['planificaciones']);
+				}
+			},
+			//cambair el tipo de combo
+			type: 'AwesomeCombo',
+			id_grupo: 0,
+			filters: {pfiltro: 'sigefop.nombre_planificacion',type: 'string'},
+			grid: true,
+			form: true
+		},
         {
                     config: {
                         name: 'id_gestion',
@@ -100,6 +147,21 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		{
+			config:{
+				name: 'contenido',
+				fieldLabel: 'Contenido',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:1000
+			},
+				type:'TextArea',
+				filters:{pfiltro:'cur.contenido',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
 //            TODO: Creando el combo del tipo de competencia
                     config: {
                         name: 'cod_tipo',
@@ -107,6 +169,7 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
                         anchor: '90%',
                         tinit: false,
                         allowBlank: false,
+                        emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'tipo',
                         gwidth: 200,
@@ -136,6 +199,7 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
                         anchor: '90%',
                         tinit: false,
                         allowBlank: false,
+                        emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'clasificacion',
                         gwidth: 200,
@@ -166,26 +230,108 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 100,
 				maxLength:1000
 			},
-				type:'TextField',
+				type:'TextArea',
 				filters:{pfiltro:'cur.objetivo',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
 		},
 		{
-			config:{
-				name: 'contenido',
-				fieldLabel: 'Contenido',
+			config: {
+				//enviar erreglo
+				name: 'id_competencias',
+				fieldLabel: 'Competencia',
 				allowBlank: true,
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_formacion/control/Competencia/listarCompetencia',
+					id: 'id_competencia',
+					root: 'datos',
+					sortInfo: {
+						field: 'competencia',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_competencia', 'competencia'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'competencia'}
+				}),
+				valueField: 'id_competencia',
+				displayField: 'competencia',
+				gdisplayField: 'competencia',
+				hiddenName: 'id_competencia',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
 				anchor: '80%',
-				gwidth: 100,
-				maxLength:1000
+				gwidth: 150,			                        
+				minChars: 2,
+				//para multiples
+			    enableMultiSelect: true,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['competencias']);
+				}
 			},
-				type:'TextField',
-				filters:{pfiltro:'cur.contenido',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			//cambair el tipo de combo
+			type: 'AwesomeCombo',
+			id_grupo: 0,
+			filters: {pfiltro: 'cuco.competencia',type: 'string'},
+			grid: true,
+			form: true
+		},
+   	    {
+			config: {
+				//enviar erreglo
+				name: 'id_funcionarios',
+				fieldLabel: 'Funcionario',
+				allowBlank: true,
+				emptyText: 'Elija una opción...',
+				       				store: new Ext.data.JsonStore({
+				    					url: '../../sis_organigrama/control/Funcionario/listarFuncionario',
+				    					id: 'id_funcionario',
+				    					root: 'datos',
+				    					sortInfo:{
+				    						field: 'desc_person',
+				    						direction: 'ASC'
+				    					},
+				    					totalProperty: 'total',
+				    					fields: ['id_funcionario','codigo','desc_person','ci','documento','telefono','celular','correo'],
+				      					// turn on remote sorting
+				    					remoteSort: true,
+				    					baseParams: {par_filtro: 'FUNCIO.codigo#PERSON.nombre_completo2'}
+
+				    				}),
+				valueField: 'id_funcionario',
+				displayField: 'desc_person',
+				tpl:'<tpl for="."> <div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{codigo}</div> <p>{desc_person}</p> <p>CI:{ci}</p> </div></tpl>',
+				gdisplayField: 'desc_person',
+				hiddenName: 'id_funcionario',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '80%',
+				gwidth: 150,
+				minChars: 2,
+				//para multiples
+				enableMultiSelect: true,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['funcionarios']);
+				}
+			},
+			//cambair el tipo de combo
+			type: 'AwesomeCombo',
+			id_grupo: 0,
+			filters: {pfiltro: 'PERSON.desc_funcionario1',type: 'string'},
+			grid: true,
+			form: true
 		},
 		{
 			config:{
@@ -285,6 +431,7 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
                         anchor: '90%',
                         tinit: false,
                         allowBlank: false,
+                        emptyText: 'Elija una opción...',
                         origen: 'CATALOGO',
                         gdisplayField: 'origen',
                         gwidth: 200,
@@ -507,6 +654,14 @@ Phx.vista.Curso=Ext.extend(Phx.gridInterfaz,{
 		{name:'gestion', type: 'string'},
 		{name:'nombre', type: 'string'},
 		{name:'rotulo_comercial', type: 'string'},
+		
+	    {name:'id_competencias', type: 'string'},
+	    {name:'competencias', type: 'string'},
+	    {name:'id_planificaciones', type: 'string'},
+	    {name:'planificaciones', type: 'string'},
+	    {name:'id_funcionarios', type: 'string'},
+	    {name:'funcionarios', type: 'string'},
+	    
 		
 	],
 	sortInfo:{

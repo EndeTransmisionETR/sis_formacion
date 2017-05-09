@@ -48,6 +48,15 @@ class MODCurso extends MODbase{
 		$this->captura('nombre','varchar');
 		$this->captura('rotulo_comercial','varchar');
 		
+		$this->captura('id_competencias','varchar');
+		$this->captura('competencias','varchar');
+		
+	    $this->captura('id_planificaciones','varchar');
+		$this->captura('planificaciones','varchar');
+		
+	    $this->captura('id_funcionarios','varchar');
+		$this->captura('funcionarios','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -78,6 +87,12 @@ class MODCurso extends MODbase{
 		$this->setParametro('expositor','expositor','varchar');
 		$this->setParametro('contenido','contenido','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		
+		$this->setParametro('id_competencias','id_competencias','varchar');
+	    $this->setParametro('id_funcionarios','id_funcionarios','varchar');
+		$this->setParametro('id_planificaciones','id_planificaciones','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -109,6 +124,12 @@ class MODCurso extends MODbase{
 		$this->setParametro('expositor','expositor','varchar');
 		$this->setParametro('contenido','contenido','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		
+		$this->setParametro('id_competencias','id_competencias','varchar');
+	    $this->setParametro('id_funcionarios','id_funcionarios','varchar');
+		$this->setParametro('id_planificaciones','id_planificaciones','varchar');
+		
+
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
