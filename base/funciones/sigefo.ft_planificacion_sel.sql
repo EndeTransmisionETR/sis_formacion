@@ -1,6 +1,6 @@
-CREATE OR REPLACE FUNCTION "sigefo"."ft_planificacion_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
+CREATE OR REPLACE FUNCTION "sigefo"."ft_planificacion_sel"(
+  p_administrador INTEGER, p_id_usuario INTEGER, p_tabla CHARACTER VARYING, p_transaccion CHARACTER VARYING)
+  RETURNS CHARACTER VARYING AS
 $BODY$
 /**************************************************************************
  SISTEMA:		Sistema de gestión de la formación
@@ -19,28 +19,29 @@ $BODY$
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
-			    
+  v_consulta       VARCHAR;
+  v_parametros     RECORD;
+  v_nombre_funcion TEXT;
+  v_resp           VARCHAR;
+
 BEGIN
 
-	v_nombre_funcion = 'sigefo.ft_planificacion_sel';
-    v_parametros = pxp.f_get_record(p_tabla);
+  v_nombre_funcion = 'sigefo.ft_planificacion_sel';
+  v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SIGEFOP_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
- 	#FECHA:		26-04-2017 20:37:24
-	***********************************/
+  /*********************************
+   #TRANSACCION:  'SIGEFO_SIGEFOP_SEL'
+   #DESCRIPCION:	Consulta de datos
+   #AUTOR:		admin
+   #FECHA:		26-04-2017 20:37:24
+  ***********************************/
 
-	if(p_transaccion='SIGEFO_SIGEFOP_SEL')then
-     				
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='select
+  IF (p_transaccion = 'SIGEFO_SIGEFOP_SEL')
+  THEN
+
+    BEGIN
+      --Sentencia de la consulta
+      v_consulta:='select
 						sigefop.id_planificacion,
 						sigefop.id_gestion,
 						sigefop.estado_reg,
@@ -83,63 +84,124 @@ from sigefo.tplanificacion_proveedor pp join param.vproveedor prov ON pp.id_prov
 where pp.id_planificacion=sigefop.id_planificacion)::varchar as desc_proveedores,
 									(select  array_to_string( array_agg(pp.id_proveedor), '','' )
 from sigefo.tplanificacion_proveedor pp
-where pp.id_planificacion=sigefop.id_planificacion)::varchar as id_proveedores
+where pp.id_planificacion=sigefop.id_planificacion)::varchar as id_proveedores,
+(select  array_to_string( array_agg(puo.id_uo), '','' )
+ from sigefo.tplanificacion_uo puo
+ where puo.id_planificacion=sigefop.id_planificacion)::varchar as id_uo,
+(select  array_to_string( array_agg(uo.nombre_unidad), ''<br>'' )
+ from sigefo.tplanificacion_uo puo join orga.tuo uo on puo.id_uo=uo.id_uo
+ where puo.id_planificacion=sigefop.id_planificacion)::varchar as desc_uo
 						from sigefo.tplanificacion sigefop
 						inner join segu.tusuario usu1 on usu1.id_usuario = sigefop.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefop.id_usuario_mod
 						inner join param.tgestion tg on sigefop.id_gestion=tg.id_gestion
 				  where  ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
+      --Definicion de la respuesta
+      v_consulta:=v_consulta || v_parametros.filtro;
+      v_consulta:=
+      v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+      v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SIGEFOP_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
- 	#FECHA:		26-04-2017 20:37:24
-	***********************************/
+      --Devuelve la respuesta
+      RETURN v_consulta;
 
-	elsif(p_transaccion='SIGEFO_SIGEFOP_CONT')then
+    END;
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_planificacion)
+    /*********************************
+     #TRANSACCION:  'SIGEFO_SIGEFOP_CONT'
+     #DESCRIPCION:	Conteo de registros
+     #AUTOR:		admin
+     #FECHA:		26-04-2017 20:37:24
+    ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_SIGEFOP_CONT')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select count(id_planificacion)
 					    from sigefo.tplanificacion sigefop
 					    inner join segu.tusuario usu1 on usu1.id_usuario = sigefop.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sigefop.id_usuario_mod
 					    where ';
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
 
-		end;
-					
-	else
-					     
-		raise exception 'Transaccion inexistente';
-					         
-	end if;
-					
-EXCEPTION
-					
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+      /*********************************
+     #TRANSACCION:  'SIGEFO_SIGEFOCGU_SEL'
+     #DESCRIPCION:	Mostrar los registro de los cargos
+     #AUTOR:		yac
+     #FECHA:		10-05-2017 20:37:24
+    ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_SIGEFOCGU_SEL')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select
+                    uo.id_uo,
+                    uo.nombre_unidad
+                    from orga.tuo uo
+        where uo.gerencia=''si'' and ';
+
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro || ' order by uo.id_nivel_organizacional';
+        RAISE NOTICE '%', v_consulta;
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+
+      /*********************************
+     #TRANSACCION:  'SIGEFO_SIGEFOCGU_CONT'
+     #DESCRIPCION:	Conteo de registros del SIGEFO_SIGEFOCGU_SEL
+     #AUTOR:		YAC
+     #FECHA:		10-05-2017 20:37:24
+    ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_SIGEFOCGU_CONT')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select
+                    count(uo.id_uo)
+                    from orga.tuo uo
+        where uo.gerencia=''si'' and ';
+
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
+
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+
+  ELSE
+
+    RAISE EXCEPTION 'Transaccion inexistente';
+
+  END IF;
+
+  EXCEPTION
+
+  WHEN OTHERS
+    THEN
+      v_resp = '';
+      v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
+      v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
+      v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
+      RAISE EXCEPTION '%', v_resp;
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 COST 100;
-ALTER FUNCTION "sigefo"."ft_planificacion_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION "sigefo"."ft_planificacion_sel"( INTEGER, INTEGER, CHARACTER VARYING, CHARACTER VARYING )
+OWNER TO postgres;

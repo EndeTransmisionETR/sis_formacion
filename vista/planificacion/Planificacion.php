@@ -18,7 +18,20 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.Planificacion.superclass.constructor.call(this, config);
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
+                this.iniciarEventos();
             },
+
+            onButtonEdit: function () {
+                Phx.vista.Planificacion.superclass.onButtonEdit.call(this);
+                this.cargarGerenciaCargos(this.Cmp.id_uo);
+                this.cargarCargosCompetencias(this.Cmp.id_cargos);
+
+                //this.window.show();
+                //this.loadForm(this.sm.getSelected())
+                //this.window.buttons[0].hide();
+
+            },
+
 
             Atributos: [
                 {
@@ -202,8 +215,55 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: true
                 },
+
                 {
-//            TODO: Preguntar a cristian como trabajar con los datos de cargo
+//                    TODO:realizatr los metodos en la en el controlador , en el modelo y en la funcion de postgres
+                    config: {
+                        name: 'id_uo',
+                        fieldLabel: 'Gerencia',
+                        allowBlank: false,
+                        emptyText: 'Gerencias...',
+                        blankText: 'Debe seleccionar una gerencia',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_formacion/control/Planificacion/listarGerenciauo',
+                            id: 'id_uo',
+                            root: 'datos',
+                            sortInfo: {
+                                field: 'nombre_unidad',
+                                direction: 'DESC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_uo', 'nombre_unidad'],
+                            remoteSort: true,
+                            baseParams: {par_filtro: 'nombre_unidad'}
+                        }),
+                        valueField: 'id_uo',
+                        displayField: 'nombre_unidad',
+                        gdisplayField: 'nombre_unidad',
+                        hiddenName: 'id_uo',
+                        forceSelection: true,
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender: true,
+                        mode: 'remote',
+                        pageSize: 15,
+                        queryDelay: 1000,
+                        anchor: '60%',
+                        gwidth: 150,
+                        minChars: 2,
+                        enableMultiSelect: true,
+                        renderer: function (value, p, record) {
+                            return String.format('{0}', (record.data['desc_uo']) ? record.data['desc_uo'] : '');
+                        }
+                    },
+                    type: 'AwesomeCombo',
+                    id_grupo: 0,
+                    filters: {pfiltro: 'desc_uo', type: 'string'},
+                    grid: true,
+                    form: true
+                },
+                {
+//            TODO: Cargado de los cargos
                     config: {
                         name: 'id_cargos',
                         fieldLabel: 'Cargo',
@@ -483,8 +543,34 @@ header("content-type: text/javascript; charset=UTF-8");
                 'id_competencias',
                 'desc_competencia',
                 'id_proveedores',
-                'desc_proveedores'
+                'desc_proveedores',
+                'id_uo',
+                'desc_uo',
+
             ],
+            iniciarEventos: function () {
+                console.log('adtos de inciar eventos', this.Cmp);
+                var semaforo = "";
+                var comparacion = "";
+                this.Cmp.id_uo.on('select', function (Combo, dato) {
+                    this.cargarGerenciaCargos(Combo);
+                }, this);
+                this.Cmp.id_cargos.on('select', function (Combo, dato) {
+                    this.cargarCargosCompetencias(Combo);
+                }, this);
+            },
+            cargarGerenciaCargos: function (Combo) {
+
+                this.Cmp.id_cargos.store.setBaseParam('id_uo', Combo.getValue());
+                this.Cmp.id_cargos.modificado = true;
+
+            },
+            cargarCargosCompetencias: function (Combo) {
+
+                this.Cmp.id_competencias.store.setBaseParam('id_cargos', Combo.getValue());
+                this.Cmp.id_competencias.modificado = true;
+
+            },
             sortInfo: {
                 field: 'id_planificacion',
                 direction: 'ASC'
