@@ -143,3 +143,8 @@ CREATE TABLE sigefo.tplanificacion_uo (
 
 WITH (oids = false);
 /***********************************F-SCP-YAC-SIGEFO-0-10/05/2017****************************************/
+
+/***********************************I-SCP-YAC-SIGEFO-0-15/05/2017****************************************/
+ALTER TABLE sigefo.tcurso
+  ADD COLUMN id_lugar_pais INTEGER;
+/***********************************F-SCP-YAC-SIGEFO-0-15/05/2017****************************************/

@@ -68,7 +68,8 @@ BEGIN
 			
 			
 			)RETURNING id_competencia into v_id_competencia;
-			
+
+
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Competencias almacenado(a) con exito (id_competencia'||v_id_competencia||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_competencia',v_id_competencia::varchar);

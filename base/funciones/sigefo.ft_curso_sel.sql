@@ -1,12 +1,12 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
+CREATE OR REPLACE FUNCTION sigefo.ft_curso_sel(
+  p_administrador INTEGER,
+  p_id_usuario    INTEGER,
+  p_tabla         VARCHAR,
+  p_transaccion   VARCHAR
 )
-RETURNS varchar AS
+  RETURNS VARCHAR AS
 $body$
 /**************************************************************************
  SISTEMA:		Sistema de gestión de la formación
@@ -25,31 +25,33 @@ $body$
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
-			    
+  v_consulta       VARCHAR;
+  v_parametros     RECORD;
+  v_nombre_funcion TEXT;
+  v_resp           VARCHAR;
+
 BEGIN
 
-	v_nombre_funcion = 'sigefo.ft_curso_sel';
-    v_parametros = pxp.f_get_record(p_tabla);
+  v_nombre_funcion = 'sigefo.ft_curso_sel';
+  v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SCU_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
- 	#FECHA:		22-01-2017 15:35:03
-	***********************************/
+  /*********************************
+   #TRANSACCION:  'SIGEFO_SCU_SEL'
+   #DESCRIPCION:	Consulta de datos
+   #AUTOR:		admin
+   #FECHA:		22-01-2017 15:35:03
+  ***********************************/
 
-	if(p_transaccion='SIGEFO_SCU_SEL')then
-     				
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='select
+  IF (p_transaccion = 'SIGEFO_SCU_SEL')
+  THEN
+
+    BEGIN
+      --Sentencia de la consulta
+      v_consulta:='select
 						scu.id_curso,
 						scu.id_gestion,
 						scu.id_lugar,
+						scu.id_lugar_pais,
 						scu.id_proveedor,
 						scu.origen,
 						scu.fecha_inicio,
@@ -72,6 +74,7 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         g.gestion,
                         l.nombre,
+                        lp.nombre as nombre_pais,
                         p.rotulo_comercial,
                         
                         (select array_to_string( array_agg( cc.id_competencia), '','' ) 
@@ -106,60 +109,122 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = scu.id_usuario_mod
                         join param.tgestion g on g.id_gestion=scu.id_gestion
                         join param.tlugar l on l.id_lugar=scu.id_lugar
+                        join param.tlugar lp on lp.id_lugar=scu.id_lugar_pais
                         join param.tproveedor p on p.id_proveedor= scu.id_proveedor
                         
                         
                         
 				        where  ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
+      --Definicion de la respuesta
+      v_consulta:=v_consulta || v_parametros.filtro;
+      v_consulta:=
+      v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+      v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SCU_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
- 	#FECHA:		22-01-2017 15:35:03
-	***********************************/
+      --Devuelve la respuesta
+      RETURN v_consulta;
 
-	elsif(p_transaccion='SIGEFO_SCU_CONT')then
+    END;
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_curso)
+    /*********************************
+     #TRANSACCION:  'SIGEFO_SCU_CONT'
+     #DESCRIPCION:	Conteo de registros
+     #AUTOR:		admin
+     #FECHA:		22-01-2017 15:35:03
+    ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_SCU_CONT')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select count(id_curso)
 					    from sigefo.tcurso scu
 					    inner join segu.tusuario usu1 on usu1.id_usuario = scu.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = scu.id_usuario_mod
 					    where ';
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
 
-		end;
-					
-	else
-					     
-		raise exception 'Transaccion inexistente';
-					         
-	end if;
-					
-EXCEPTION
-					
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+
+
+      /*********************************
+       #TRANSACCION:  'PM_LUG_SEL'
+       #DESCRIPCION:	Consulta de datos
+       #AUTOR:		rac
+       #FECHA:		29-08-2011 09:19:28
+      ***********************************/
+
+  ELSEIF (p_transaccion = 'PM_PAISLUGAR_SEL')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta
+        v_consulta:='select
+          lug.id_lugar,
+          lug.nombre,
+          lug.tipo
+        FROM param.tlugar lugp LEFT JOIN param.tlugar lug ON lugp.id_lugar = lug.id_lugar_fk
+				where  ';
+
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
+        v_consulta:=
+        v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+        v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+
+
+
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+      /*********************************
+     #TRANSACCION:  'PM_LUG_CONT'
+     #DESCRIPCION:	Conteo de registros
+     #AUTOR:		rac
+     #FECHA:		29-08-2011 09:19:28
+    ***********************************/
+
+  ELSIF (p_transaccion = 'PM_PAISLUGAR_CONT')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select count(lug.id_lugar)
+					            FROM param.tlugar lugp LEFT JOIN param.tlugar lug ON lugp.id_lugar = lug.id_lugar_fk
+					    where ';
+
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
+
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+
+  ELSE
+
+    RAISE EXCEPTION 'Transaccion inexistente';
+
+  END IF;
+
+  EXCEPTION
+
+  WHEN OTHERS
+    THEN
+      v_resp = '';
+      v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
+      v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
+      v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
+      RAISE EXCEPTION '%', v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'

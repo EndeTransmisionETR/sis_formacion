@@ -67,7 +67,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         },
                         renderer: function (value, p, record) {
                             return String.format('{0}', record.data['tipo']);
-                        }
+                        },
+                        valueField: 'codigo'
                     },
                     type: 'ComboRec',
                     id_grupo: 0,
@@ -78,7 +79,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: true
                 },
-
                 {
                     config: {
                         name: 'estado_reg',
@@ -218,7 +218,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel: true,
-            bsave: true
+            bsave: false
         }
     )
 </script>

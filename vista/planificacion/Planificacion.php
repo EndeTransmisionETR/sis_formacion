@@ -549,9 +549,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
             ],
             iniciarEventos: function () {
-                console.log('adtos de inciar eventos', this.Cmp);
-                var semaforo = "";
-                var comparacion = "";
+
                 this.Cmp.id_uo.on('select', function (Combo, dato) {
                     this.cargarGerenciaCargos(Combo);
                 }, this);
@@ -576,7 +574,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel: true,
-            bsave: true
+            bsave: false
         }
     )
 </script>
