@@ -29,12 +29,11 @@ header("content-type: text/javascript; charset=UTF-8");
 
             },
             cargarPaiseLugares: function (Combo) {
+                //TODO: Preguntar a remsi sobre el limpiado del combo(RENSI)
                 this.Cmp.id_lugar.store.setBaseParam('id_lugar_padre', Combo.getValue());
                 this.Cmp.id_lugar.modificado = true;
 
             },
-
-
                 /*	tabeast: [
                  {
                  url: '../../../sis_formacion/vista/curso_competencia/CursoCompetencia.php',
@@ -187,7 +186,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
                 {
-//            TODO: Creando el combo del tipo de competencia
                     config: {
                         name: 'cod_tipo',
                         fieldLabel: 'Tipo',
@@ -217,7 +215,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
                 {
-//            TODO: Creando el combo del tipo de competencia
                     config: {
                         name: 'cod_clasificacion',
                         fieldLabel: 'Clasificación',
@@ -409,7 +406,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: true
                 },
-                //TODO: mostrar solamente los paises
 
                 {
                     config: {

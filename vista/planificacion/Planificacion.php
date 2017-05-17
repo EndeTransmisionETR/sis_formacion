@@ -164,8 +164,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
 
-                // TODO: El guardado de los datos lo realiza en codificacion,
-                // TODO: Preguntar a remsi.
                 {
                     config: {
                         name: 'cod_criterio',
@@ -217,7 +215,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
 
                 {
-//                    TODO:realizatr los metodos en la en el controlador , en el modelo y en la funcion de postgres
                     config: {
                         name: 'id_uo',
                         fieldLabel: 'Gerencia',
@@ -263,7 +260,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
                 {
-//            TODO: Cargado de los cargos
                     config: {
                         name: 'id_cargos',
                         fieldLabel: 'Cargo',
