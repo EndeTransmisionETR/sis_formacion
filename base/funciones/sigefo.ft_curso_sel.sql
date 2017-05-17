@@ -119,8 +119,8 @@ BEGIN
       v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-      RAISE NOTICE '%',v_consulta;
-      RAISE NOTICE 'datos error yac';
+      --RAISE NOTICE '%',v_consulta;
+      --RAISE EXCEPTION 'datos error yac';
       --Devuelve la respuesta
       RETURN v_consulta;
 

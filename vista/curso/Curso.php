@@ -34,6 +34,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
             },
 
+
                 /*	tabeast: [
                  {
                  url: '../../../sis_formacion/vista/curso_competencia/CursoCompetencia.php',
@@ -42,6 +43,16 @@ header("content-type: text/javascript; charset=UTF-8");
                  cls: 'CursoCompetencia'
                  }
                  ],*/
+
+        onButtonEdit: function () {
+            Phx.vista.Curso.superclass.onButtonEdit.call(this);
+            this.cargarPaiseLugares(this.Cmp.id_lugar_pais);
+
+            //this.window.show();
+            //this.loadForm(this.sm.getSelected())
+            //this.window.buttons[0].hide();
+
+        },
 
             Atributos: [
                 {
@@ -419,10 +430,10 @@ header("content-type: text/javascript; charset=UTF-8");
                             remoteSort: true,
                             baseParams: {par_filtro: 'nombre', tipo: 'pais'}
                         }),
-                        valueField: 'id_lugar',
-                        displayField: 'nombre',
-                        gdisplayField: 'nombre',
-                        hiddenName: 'id_lugar',
+                        valueField: 'id_lugar', //srtore del combo
+                        displayField: 'nombre', //estore del combo
+                        gdisplayField: 'nombre_pais', //datos del store del grid
+                        hiddenName: 'id_lugar_pais',// datos del store del grid
                         forceSelection: true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -439,7 +450,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.nombre', type: 'string'},
+                    filters: {pfiltro: 'lp.id_lugar_pais', type: 'string'},
                     grid: true,
                     form: true
                 },
