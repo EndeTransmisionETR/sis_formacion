@@ -62,7 +62,7 @@ class ACTPlanificacion extends ACTbase{
     }
     function listarGerenciauo(){
 
-        $this->objParam->defecto('ordenacion','id_nivel_organizacional');
+        $this->objParam->defecto('ordenacion','uo.nombre_unidad');
 
         $this->objParam->defecto('dir_ordenacion','asc');
 

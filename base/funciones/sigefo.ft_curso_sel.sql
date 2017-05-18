@@ -75,7 +75,7 @@ BEGIN
                         g.gestion,
                         l.nombre,
                         lp.nombre as nombre_pais,
-                        p.rotulo_comercial,
+                        p.desc_proveedor,
                         
                         (select array_to_string( array_agg( cc.id_competencia), '','' ) 
                         from sigefo.tcurso_competencia cc join sigefo.tcurso c on c.id_curso=cc.id_curso 
@@ -110,7 +110,7 @@ BEGIN
                         join param.tgestion g on g.id_gestion=scu.id_gestion
                         join param.tlugar l on l.id_lugar=scu.id_lugar
                         join param.tlugar lp on lp.id_lugar=scu.id_lugar_pais
-                        join param.tproveedor p on p.id_proveedor= scu.id_proveedor
+                        join param.vproveedor p on p.id_proveedor= scu.id_proveedor
 				        where  ';
 
       --Definicion de la respuesta

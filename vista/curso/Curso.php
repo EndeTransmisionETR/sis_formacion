@@ -276,7 +276,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             totalProperty: 'total',
                             fields: ['id_competencia', 'competencia'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'competencia'}
+                            baseParams: {par_filtro: 'movtip.competencia'}
                         }),
                         valueField: 'id_competencia',
                         displayField: 'competencia',
@@ -287,7 +287,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         triggerAction: 'all',
                         lazyRender: true,
                         mode: 'remote',
-                        pageSize: 15,
+                        pageSize: 5,
                         queryDelay: 1000,
                         anchor: '80%',
                         gwidth: 150,
@@ -301,7 +301,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     //cambair el tipo de combo
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'cuco.competencia', type: 'string'},
+                    filters: {pfiltro: 'movtip.competencia', type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -549,17 +549,17 @@ header("content-type: text/javascript; charset=UTF-8");
                             id: 'id_proveedor',
                             root: 'datos',
                             sortInfo: {
-                                field: 'rotulo_comercial',
-                                direction: 'DESC'
+                                field: 'desc_proveedor',
+                                direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_proveedor', 'rotulo_comercial'],
+                            fields: ['id_proveedor', 'desc_proveedor'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'rotulo_comercial'}
+                            baseParams: {par_filtro: 'desc_proveedor'}
                         }),
                         valueField: 'id_proveedor',
-                        displayField: 'rotulo_comercial',
-                        gdisplayField: 'rotulo_comercial',
+                        displayField: 'desc_proveedor',
+                        gdisplayField: 'desc_proveedor',
                         hiddenName: 'id_proveedor',
                         forceSelection: true,
                         typeAhead: false,
@@ -572,12 +572,12 @@ header("content-type: text/javascript; charset=UTF-8");
                         gwidth: 150,
                         minChars: 2,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['rotulo_comercial']);
+                            return String.format('{0}', record.data['desc_proveedor']);
                         }
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.rotulo_comercial', type: 'string'},
+                    filters: {pfiltro: 'desc_proveedor', type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -728,7 +728,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'gestion', type: 'string'},
                 {name: 'nombre', type: 'string'},
                 {name: 'nombre_pais', type: 'string'},
-                {name: 'rotulo_comercial', type: 'string'},
+                {name: 'desc_proveedor', type: 'string'},
 
                 {name: 'id_competencias', type: 'string'},
                 {name: 'competencias', type: 'string'},
