@@ -153,10 +153,10 @@ ALTER TABLE sigefo.tcurso
 /***********************************I-SCP-JUAN-SIGEFO-0-18/05/2017****************************************/
 
 ALTER TABLE sigefo.tcurso_planificacion
-  DROP CONSTRAINT tcurso_planificacion_fk RESTRICT;
+  DROP CONSTRAINT tcurso_planificacion_fk1 RESTRICT;
 
 ALTER TABLE sigefo.tcurso_planificacion
-  ADD CONSTRAINT tcurso_planificacion_fk FOREIGN KEY (id_curso)
+  ADD CONSTRAINT tcurso_planificacion_fk1 FOREIGN KEY (id_curso)
     REFERENCES sigefo.tcurso(id_curso)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
@@ -164,10 +164,10 @@ ALTER TABLE sigefo.tcurso_planificacion
     
 
 ALTER TABLE sigefo.tcurso_funcionario
-  DROP CONSTRAINT tcurso_funcionario_fk RESTRICT;
+  DROP CONSTRAINT tcurso_funcionario_fk1 RESTRICT;
 
 ALTER TABLE sigefo.tcurso_funcionario
-  ADD CONSTRAINT tcurso_funcionario_fk FOREIGN KEY (id_curso)
+  ADD CONSTRAINT tcurso_funcionario_fk1 FOREIGN KEY (id_curso)
     REFERENCES sigefo.tcurso(id_curso)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
@@ -175,10 +175,10 @@ ALTER TABLE sigefo.tcurso_funcionario
     
 
 ALTER TABLE sigefo.tcurso_competencia
-  DROP CONSTRAINT tcurso_competencia_fk RESTRICT;
+  DROP CONSTRAINT tcurso_competencia_fk1 RESTRICT;
 
 ALTER TABLE sigefo.tcurso_competencia
-  ADD CONSTRAINT tcurso_competencia_fk FOREIGN KEY (id_curso)
+  ADD CONSTRAINT tcurso_competencia_fk1 FOREIGN KEY (id_curso)
     REFERENCES sigefo.tcurso(id_curso)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
