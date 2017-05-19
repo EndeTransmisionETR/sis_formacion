@@ -327,7 +327,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         valueField: 'id_competencia',
                         displayField: 'competencia',
                         gdisplayField: 'competencia',
-                        hiddenName: 'id_competencia',
+                        hiddenName: 'id_competencias',
                         forceSelection: true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -345,7 +345,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'desc_competencia', type: 'string'},
+                    filters: {pfiltro: 'competencia', type: 'string'},
                     grid: true,
                     form: true
                 },

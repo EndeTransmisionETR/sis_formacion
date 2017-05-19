@@ -276,12 +276,12 @@ header("content-type: text/javascript; charset=UTF-8");
                             totalProperty: 'total',
                             fields: ['id_competencia', 'competencia'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'movtip.competencia'}
+                            baseParams: {par_filtro: 'competencia'}
                         }),
                         valueField: 'id_competencia',
                         displayField: 'competencia',
                         gdisplayField: 'competencia',
-                        hiddenName: 'id_competencia',
+                        hiddenName: 'id_competencias',
                         forceSelection: true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -301,7 +301,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     //cambair el tipo de combo
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.competencia', type: 'string'},
+                    filters: {pfiltro: 'competencia', type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -458,16 +458,16 @@ header("content-type: text/javascript; charset=UTF-8");
                         emptyText: 'Elija una opción...',
                         store: new Ext.data.JsonStore({
                             url: '../../sis_formacion/control/Curso/listarPaisLugar',
-                            id: 'id_',
+                            id: 'id_lugar',
                             root: 'datos',
                             sortInfo: {
-                                field: 'nombre',
+                                field: 'lug.nombre',
                                 direction: 'ASC'
                             },
                             totalProperty: 'total',
                             fields: ['id_lugar', 'nombre', 'tipo'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'nombre',tipo:'pais'}
+                            baseParams: {par_filtro: 'lug.nombre',tipo:'pais'}
                         }),
                         valueField: 'id_lugar',
                         displayField: 'nombre',
@@ -489,7 +489,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.nombre', type: 'string'},
+                    filters: {pfiltro: 'lug.nombre', type: 'string'},
                     grid: true,
                     form: true
                 },

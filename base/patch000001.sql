@@ -152,7 +152,6 @@ ALTER TABLE sigefo.tcurso
 
 /***********************************I-SCP-JUAN-SIGEFO-0-18/05/2017****************************************/
 
--- object recreation
 ALTER TABLE sigefo.tcurso_planificacion
   DROP CONSTRAINT tcurso_planificacion_fk RESTRICT;
 
@@ -164,7 +163,6 @@ ALTER TABLE sigefo.tcurso_planificacion
     NOT DEFERRABLE;
     
 
--- object recreation
 ALTER TABLE sigefo.tcurso_funcionario
   DROP CONSTRAINT tcurso_funcionario_fk RESTRICT;
 
@@ -176,7 +174,6 @@ ALTER TABLE sigefo.tcurso_funcionario
     NOT DEFERRABLE;   
     
 
--- object recreation
 ALTER TABLE sigefo.tcurso_competencia
   DROP CONSTRAINT tcurso_competencia_fk RESTRICT;
 
@@ -188,7 +185,6 @@ ALTER TABLE sigefo.tcurso_competencia
     NOT DEFERRABLE;
     
 
--- object recreation
 ALTER TABLE sigefo.tplanificacion_competencia
   DROP CONSTRAINT tplanificacion_competencia_fk RESTRICT;
 
@@ -200,7 +196,6 @@ ALTER TABLE sigefo.tplanificacion_competencia
     NOT DEFERRABLE;
     
 
--- object recreation
 ALTER TABLE sigefo.tplanificacion_uo
   DROP CONSTRAINT tplanificacion_uo_fk RESTRICT;
 
@@ -212,7 +207,6 @@ ALTER TABLE sigefo.tplanificacion_uo
     NOT DEFERRABLE;
     
 
--- object recreation
 ALTER TABLE sigefo.tplanificacion_cargo
   DROP CONSTRAINT tplanificacion_cargo_fk RESTRICT;
 
