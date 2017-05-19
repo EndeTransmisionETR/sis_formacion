@@ -160,7 +160,7 @@ class MODCompetencia extends MODbase{
 		$this->captura('id_temporal_cargo','int4');
 		$this->captura('id_escala_salarial','int4');
 		$this->captura('codigo','varchar');
-		$this->captura('nombre','varchar');
+		$this->captura('nombre_cargo','varchar');
 		$this->captura('fecha_ini','date');
 		$this->captura('estado_reg','varchar');
 		$this->captura('fecha_fin','date');
@@ -186,6 +186,23 @@ class MODCompetencia extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	function eliminarCargoCompetencia(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='sigefo.ft_competencia_ime';
+		$this->transaccion='SIGEFO_ECCOMPETENCIA';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('cod_competencias','competencias','json_text');
+		$this->setParametro('id_cargo','id_cargo','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}

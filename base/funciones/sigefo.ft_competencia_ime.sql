@@ -40,7 +40,6 @@ DECLARE
   v_cargo_competencia_duplicados TEXT;
 
 BEGIN
-
   v_nombre_funcion = 'sigefo.ft_competencia_ime';
   v_parametros = pxp.f_get_record(p_tabla);
 
@@ -198,11 +197,35 @@ BEGIN
       END;
 
       /*********************************
-       #TRANSACCION:  'SIGEFO_SIGEFOCO_ELI'
-       #DESCRIPCION:	Eliminacion de registros
-       #AUTOR:		admin
-       #FECHA:		04-05-2017 19:30:13
+       #TRANSACCION:  'SIGEFO_ECCOMPETENCIA'
+       #DESCRIPCION:	Eliminacion de CARGO COMPETENCIA
+       #AUTOR:		JUAN
+       #FECHA:		17-05-2017 20:25:54
       ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_ECCOMPETENCIA')
+    THEN
+
+      BEGIN
+        --Sentencia de la eliminacion
+        j_id_competencias := v_parametros.cod_competencias;
+        FOR j_competencias IN (SELECT *
+                               FROM json_array_elements(j_id_competencias)) LOOP
+          DELETE FROM sigefo.tcargo_competencia
+          WHERE id_cargo = v_parametros.id_cargo AND id_competencia = (j_competencias ->> 'cod_competencia') :: INTEGER;
+        END LOOP;
+        --Definicion de la respuesta
+        v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'cargo competencia eliminado(a)');
+        v_resp = pxp.f_agrega_clave(v_resp, 'id_cargo', v_parametros.id_cargo :: VARCHAR);
+
+        --Devuelve la respuesta
+
+        --RAISE NOTICE 'preuba cargo % ', v_parametros.id_cargo;
+
+        -- RAISE EXCEPTION 'error juan';
+        RETURN v_resp;
+
+      END;
 
   ELSIF (p_transaccion = 'SIGEFO_SIGEFOCO_ELI')
     THEN

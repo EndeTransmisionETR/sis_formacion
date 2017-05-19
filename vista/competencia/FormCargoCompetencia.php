@@ -25,13 +25,53 @@ header("content-type: text/javascript; charset=UTF-8");
 
             },
             
+           
+            
            onReloadPage: function (m) {     
                this.maestro = m;
                var aa=this;
                this.store.baseParams = {id_cargo: this.maestro.id_cargo};
                this.load({params: {start: 0, limit: 50}})
               // this.load();
+             // this.store.baseParams.cod_cargo = this.maestro.cod_cargo;
+              
+             
+              
            },
+       onButtonDel:function(){
+		if(confirm('¿Está seguro de eliminar competencia?')){
+			//recupera los registros seleccionados
+
+        	var filas=this.sm.getSelections();
+			var data= [],aux={};
+
+            this.agregarArgsExtraSubmit();
+			for(var i=0;i<this.sm.getCount();i++){
+		        aux={};
+				aux[this.id_store]=filas[i].data[this.id_store];
+				aux.cod_competencia=filas[i].data.cod_competencia;
+
+				data.push(aux);
+			}
+
+			//llama el metodo en la capa de control para eliminación
+			var me = this;
+            Ext.Ajax.request({
+
+                url: '../../sis_formacion/control/Competencia/eliminarCargoCompetencia',
+                params: {
+                	id_cargo:this.store.baseParams.id_cargo,
+                	competencias: Ext.util.JSON.encode(data)
+                },
+
+                success: me.successSave,
+                failure: me.conexionFailure,
+                timeout: me.timeout,
+                scope: me
+            });
+            
+		}
+	},
 
             Atributos: [
                 {
@@ -226,7 +266,7 @@ header("content-type: text/javascript; charset=UTF-8");
             tam_pag: 50,
             title: 'Competencias',
             ActSave: '../../sis_formacion/control/Competencia/insertarCompetencia',
-            ActDel: '../../sis_formacion/control/Competencia/eliminarCompetencia',
+            ActDel: '../../sis_formacion/control/Competencia/eliminarCargoCompetencia',
             ActList: '../../sis_formacion/control/Competencia/listarCompetenciaCargo',
             id_store: 'id_competencia',
             fields: [
@@ -249,7 +289,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 field: 'id_competencia',
                 direction: 'ASC'
             },
-            bdel:false,
+            bdel:true,
 	        bedit:false,
 	        bsave:false,
 	        bnew:false,
