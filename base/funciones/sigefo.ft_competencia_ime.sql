@@ -1,11 +1,10 @@
-
-CREATE OR REPLACE FUNCTION sigefo.ft_competencia_ime (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
+CREATE OR REPLACE FUNCTION sigefo.ft_competencia_ime(
+  p_administrador INTEGER,
+  p_id_usuario    INTEGER,
+  p_tabla         VARCHAR,
+  p_transaccion   VARCHAR
 )
-RETURNS varchar AS
+  RETURNS VARCHAR AS
 $body$
 /**************************************************************************
  SISTEMA:		Sistema de gestión de la formación
@@ -24,199 +23,220 @@ $body$
 
 DECLARE
 
-	v_nro_requerimiento    	integer;
-	v_parametros           	record;
-	v_id_requerimiento     	integer;
-	v_resp		            varchar;
-	v_nombre_funcion           text;
-	v_mensaje_error            text;
-	v_id_competencia	    integer;
-    
-    j_cargos                   JSON;
-    j_id_cargos                JSON;
-    j_competencias             JSON;
-    j_id_competencias          JSON;
-    
-    v_validar_cargo_competencia integer;
-    v_cargo_competencia_duplicados text;
-			    
+  v_nro_requerimiento            INTEGER;
+  v_parametros                   RECORD;
+  v_id_requerimiento             INTEGER;
+  v_resp                         VARCHAR;
+  v_nombre_funcion               TEXT;
+  v_mensaje_error                TEXT;
+  v_id_competencia               INTEGER;
+
+  j_cargos                       JSON;
+  j_id_cargos                    JSON;
+  j_competencias                 JSON;
+  j_id_competencias              JSON;
+
+  v_validar_cargo_competencia    INTEGER;
+  v_cargo_competencia_duplicados TEXT;
+
 BEGIN
 
-    v_nombre_funcion = 'sigefo.ft_competencia_ime';
-    v_parametros = pxp.f_get_record(p_tabla);
+  v_nombre_funcion = 'sigefo.ft_competencia_ime';
+  v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SIGEFOCO_INS'
- 	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		admin	
- 	#FECHA:		04-05-2017 19:30:13
-	***********************************/
+  /*********************************
+   #TRANSACCION:  'SIGEFO_SIGEFOCO_INS'
+   #DESCRIPCION:	Insercion de registros
+   #AUTOR:		admin
+   #FECHA:		04-05-2017 19:30:13
+  ***********************************/
 
-	if(p_transaccion='SIGEFO_SIGEFOCO_INS')then
-					
-        begin
-        	--Sentencia de la insercion
-        	insert into sigefo.tcompetencia(
-			tipo,
-			estado_reg,
-			competencia,
-			id_usuario_ai,
-			id_usuario_reg,
-			fecha_reg,
-			usuario_ai,
-			id_usuario_mod,
-			fecha_mod
-          	) values(
-			v_parametros.tipo,
-			'activo',
-			v_parametros.competencia,
-			v_parametros._id_usuario_ai,
-			p_id_usuario,
-			now(),
-			v_parametros._nombre_usuario_ai,
-			null,
-			null
-							
-			
-			
-			)RETURNING id_competencia into v_id_competencia;
-			
-			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Competencias almacenado(a) con exito (id_competencia'||v_id_competencia||')'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_competencia',v_id_competencia::varchar);
+  IF (p_transaccion = 'SIGEFO_SIGEFOCO_INS')
+  THEN
 
-            --Devuelve la respuesta
-            return v_resp;
+    BEGIN
+      --Sentencia de la insercion
+      INSERT INTO sigefo.tcompetencia (
+        tipo,
+        estado_reg,
+        competencia,
+        id_usuario_ai,
+        id_usuario_reg,
+        fecha_reg,
+        usuario_ai,
+        id_usuario_mod,
+        fecha_mod
+      ) VALUES (
+        v_parametros.tipo,
+        'activo',
+        v_parametros.competencia,
+        v_parametros._id_usuario_ai,
+        p_id_usuario,
+        now(),
+        v_parametros._nombre_usuario_ai,
+        NULL,
+        NULL
 
-		end;
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SIGEFOCO_MOD'
- 	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		admin	
- 	#FECHA:		04-05-2017 19:30:13
-	***********************************/
+      )
+      RETURNING id_competencia
+        INTO v_id_competencia;
 
-	elsif(p_transaccion='SIGEFO_SIGEFOCO_MOD')then
+      --Definicion de la respuesta
+      v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
+                                  'Competencias almacenado(a) con exito (id_competencia' || v_id_competencia || ')');
+      v_resp = pxp.f_agrega_clave(v_resp, 'id_competencia', v_id_competencia :: VARCHAR);
 
-		begin
-			--Sentencia de la modificacion
-			update sigefo.tcompetencia set
-			tipo = v_parametros.tipo,
-			competencia = v_parametros.competencia,
-			id_usuario_mod = p_id_usuario,
-			fecha_mod = now(),
-			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
-			where id_competencia=v_parametros.id_competencia;
-               
-			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Competencias modificado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_competencia',v_parametros.id_competencia::varchar);
-               
-            --Devuelve la respuesta
-            return v_resp;
-            
-		end;
-        
-	/*********************************    
- 	#TRANSACCION:  'SIGEFOCCO_INS'
- 	#DESCRIPCION:	Insertar la tabla cargo competencia
- 	#AUTOR:		Juan	
- 	#FECHA:		11-05-2017 19:30:13
-	***********************************/
+      --Devuelve la respuesta
+      RETURN v_resp;
 
-	elsif(p_transaccion='SIGEFOCCO_INS')then
-        
-		begin
-		  j_id_cargos := v_parametros.cod_cargos;
-          
-         FOR j_cargos IN (SELECT * FROM json_array_elements(j_id_cargos) ) LOOP
-           --   raise NOTICE '%',  (j_cargos ->> 'cod_cargo');
-              j_id_competencias := v_parametros.cod_competencias;
-              FOR j_competencias IN (SELECT * FROM json_array_elements(j_id_competencias) ) LOOP
-              
-              
-           --   v_cargo_competencia_duplicados text;
-    
-                v_validar_cargo_competencia=(select count(cc.id_cargo) from sigefo.tcargo_competencia cc where cc.id_cargo=(j_cargos ->> 'cod_cargo')::INTEGER and cc.id_competencia=(j_competencias ->> 'cod_competencia')::INTEGER);  
-              	if(v_validar_cargo_competencia > 0)then
+    END;
 
-                v_cargo_competencia_duplicados =  (v_cargo_competencia_duplicados || (select (cargo.nombre ||' => '||c.competencia) from sigefo.tcargo_competencia cc join sigefo.tcompetencia c on c.id_competencia=cc.id_competencia join orga.tcargo cargo on cargo.id_cargo=cc.id_cargo   where cc.id_cargo=(j_cargos ->> 'cod_cargo')::INTEGER and cc.id_competencia=(j_competencias ->> 'cod_competencia')::INTEGER))::VARCHAR;
-                
-                else
-                  insert into sigefo.tcargo_competencia(
-			      id_cargo,
-			      id_competencia,
-            	  estado_reg,
-			      id_usuario_ai,
-			      id_usuario_reg,
-			      fecha_reg,
-			      usuario_ai,
-			      id_usuario_mod,
-			      fecha_mod
-          	      ) values(
-			      (j_cargos ->> 'cod_cargo')::INTEGER,
-			      (j_competencias ->> 'cod_competencia')::INTEGER,
-                   'activo',
-			       v_parametros._id_usuario_ai,
-			       p_id_usuario,
-			       now(),
-			       v_parametros._nombre_usuario_ai,
-			       null,
-			       null
-			       ); 
-                   
-                end if;
- 
-                   
-              END LOOP;
-         END LOOP;
-        
-            --Devuelve la respuesta
-          --  raise EXCEPTION 'juan error ';
-            return v_resp;
-            
-		end;
+    /*********************************
+     #TRANSACCION:  'SIGEFO_SIGEFOCO_MOD'
+     #DESCRIPCION:	Modificacion de registros
+     #AUTOR:		admin
+     #FECHA:		04-05-2017 19:30:13
+    ***********************************/
 
-	/*********************************    
- 	#TRANSACCION:  'SIGEFO_SIGEFOCO_ELI'
- 	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		admin	
- 	#FECHA:		04-05-2017 19:30:13
-	***********************************/
+  ELSIF (p_transaccion = 'SIGEFO_SIGEFOCO_MOD')
+    THEN
 
-	elsif(p_transaccion='SIGEFO_SIGEFOCO_ELI')then
+      BEGIN
+        --Sentencia de la modificacion
+        UPDATE sigefo.tcompetencia
+        SET
+          tipo           = v_parametros.tipo,
+          competencia    = v_parametros.competencia,
+          id_usuario_mod = p_id_usuario,
+          fecha_mod      = now(),
+          id_usuario_ai  = v_parametros._id_usuario_ai,
+          usuario_ai     = v_parametros._nombre_usuario_ai
+        WHERE id_competencia = v_parametros.id_competencia;
 
-		begin
-			--Sentencia de la eliminacion
-			delete from sigefo.tcompetencia
-            where id_competencia=v_parametros.id_competencia;
-               
-            --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Competencias eliminado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_competencia',v_parametros.id_competencia::varchar);
-              
-            --Devuelve la respuesta
-            return v_resp;
+        --Definicion de la respuesta
+        v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'Competencias modificado(a)');
+        v_resp = pxp.f_agrega_clave(v_resp, 'id_competencia', v_parametros.id_competencia :: VARCHAR);
 
-		end;
-         
-	else
-     
-    	raise exception 'Transaccion inexistente: %',p_transaccion;
+        --Devuelve la respuesta
+        RETURN v_resp;
 
-	end if;
+      END;
 
-EXCEPTION
-				
-	WHEN OTHERS THEN
-		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-				        
+      /*********************************
+       #TRANSACCION:  'SIGEFOCCO_INS'
+       #DESCRIPCION:	Insertar la tabla cargo competencia
+       #AUTOR:		Juan
+       #FECHA:		11-05-2017 19:30:13
+      ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFOCCO_INS')
+    THEN
+
+      BEGIN
+        j_id_cargos := v_parametros.cod_cargos;
+
+        FOR j_cargos IN (SELECT *
+                         FROM json_array_elements(j_id_cargos)) LOOP
+          --   raise NOTICE '%',  (j_cargos ->> 'cod_cargo');
+          j_id_competencias := v_parametros.cod_competencias;
+          FOR j_competencias IN (SELECT *
+                                 FROM json_array_elements(j_id_competencias)) LOOP
+
+
+            --   v_cargo_competencia_duplicados text;
+
+            v_validar_cargo_competencia = (SELECT count(cc.id_cargo)
+                                           FROM sigefo.tcargo_competencia cc
+                                           WHERE cc.id_cargo = (j_cargos ->> 'cod_cargo') :: INTEGER AND
+                                                 cc.id_competencia = (j_competencias ->> 'cod_competencia') :: INTEGER);
+            IF (v_validar_cargo_competencia > 0)
+            THEN
+
+              v_cargo_competencia_duplicados = (v_cargo_competencia_duplicados ||
+                                                (SELECT (cargo.nombre || ' => ' || c.competencia)
+                                                 FROM sigefo.tcargo_competencia cc
+                                                   JOIN sigefo.tcompetencia c ON c.id_competencia = cc.id_competencia
+                                                   JOIN orga.tcargo cargo ON cargo.id_cargo = cc.id_cargo
+                                                 WHERE cc.id_cargo = (j_cargos ->> 'cod_cargo') :: INTEGER AND
+                                                       cc.id_competencia =
+                                                       (j_competencias ->> 'cod_competencia') :: INTEGER)) :: VARCHAR;
+
+            ELSE
+              INSERT INTO sigefo.tcargo_competencia (
+                id_cargo,
+                id_competencia,
+                estado_reg,
+                id_usuario_ai,
+                id_usuario_reg,
+                fecha_reg,
+                usuario_ai,
+                id_usuario_mod,
+                fecha_mod
+              ) VALUES (
+                (j_cargos ->> 'cod_cargo') :: INTEGER,
+                (j_competencias ->> 'cod_competencia') :: INTEGER,
+                'activo',
+                v_parametros._id_usuario_ai,
+                p_id_usuario,
+                now(),
+                v_parametros._nombre_usuario_ai,
+                NULL,
+                NULL
+              );
+
+            END IF;
+
+
+          END LOOP;
+        END LOOP;
+
+        --Devuelve la respuesta
+        --  raise EXCEPTION 'juan error ';
+        RETURN v_resp;
+
+      END;
+
+      /*********************************
+       #TRANSACCION:  'SIGEFO_SIGEFOCO_ELI'
+       #DESCRIPCION:	Eliminacion de registros
+       #AUTOR:		admin
+       #FECHA:		04-05-2017 19:30:13
+      ***********************************/
+
+  ELSIF (p_transaccion = 'SIGEFO_SIGEFOCO_ELI')
+    THEN
+
+      BEGIN
+        --Sentencia de la eliminacion
+        DELETE FROM sigefo.tcompetencia
+        WHERE id_competencia = v_parametros.id_competencia;
+
+        --Definicion de la respuesta
+        v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', 'Competencias eliminado(a)');
+        v_resp = pxp.f_agrega_clave(v_resp, 'id_competencia', v_parametros.id_competencia :: VARCHAR);
+
+        --Devuelve la respuesta
+        RETURN v_resp;
+
+      END;
+
+  ELSE
+
+    RAISE EXCEPTION 'Transaccion inexistente: %', p_transaccion;
+
+  END IF;
+
+  EXCEPTION
+
+  WHEN OTHERS
+    THEN
+      v_resp = '';
+      v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
+      v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
+      v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
+      RAISE EXCEPTION '%', v_resp;
+
 END;
 $body$
 LANGUAGE 'plpgsql'
