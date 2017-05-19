@@ -12,14 +12,6 @@ ALTER TABLE sigefo.tplanificacion
 /***********************************I-DEP-YAC-SIGEFO-0-04/05/2017*****************************************/
 
 
-ALTER TABLE sigefo.tplanificacion_critico
-  ADD CONSTRAINT tplanificacion_critico_fk FOREIGN KEY (id_planificacion)
-REFERENCES sigefo.tplanificacion(id_planificacion)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-
 ALTER TABLE sigefo.tcargo_competencia
   ADD CONSTRAINT tcargo_competencia_fk FOREIGN KEY (id_cargo)
 REFERENCES orga.tcargo(id_cargo)
@@ -200,17 +192,6 @@ ALTER TABLE sigefo.tcurso_funcionario
 ALTER TABLE sigefo.tcurso_funcionario
   ADD CONSTRAINT tcurso_funcionario_fk FOREIGN KEY (id_curso)
     REFERENCES sigefo.tcurso(id_curso)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION
-    NOT DEFERRABLE;
-    
-
-ALTER TABLE sigefo.tplanificacion_criterio
-  DROP CONSTRAINT tplanificacion_critico_fk RESTRICT;
-
-ALTER TABLE sigefo.tplanificacion_criterio
-  ADD CONSTRAINT tplanificacion_critico_fk FOREIGN KEY (id_planificacion)
-    REFERENCES sigefo.tplanificacion(id_planificacion)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
