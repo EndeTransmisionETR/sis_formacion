@@ -54,7 +54,7 @@ BEGIN
           JOIN orga.testructura_uo euo ON uop.id_uo = euo.id_uo_padre
           LEFT JOIN orga.tuo ON euo.id_uo_hijo = tuo.id_uo
           JOIN orga.tcargo tc ON tc.id_uo=euo.id_uo_hijo
-        WHERE uop.gerencia = ''si'' AND ';
+        WHERE uop.gerencia = ''si'' and tc.estado_reg=''activo'' AND ';
 
       --Definicion de la respuesta
       v_consulta:=v_consulta || v_parametros.filtro;
