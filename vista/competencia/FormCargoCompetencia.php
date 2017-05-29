@@ -14,64 +14,62 @@ header("content-type: text/javascript; charset=UTF-8");
 
             constructor: function (config) {
                 this.maestro = config.maestro;
-                
-                
+
+
                 //llama al constructor de la clase padre
                 Phx.vista.FormCargoCompetencia.superclass.constructor.call(this, config);
                 this.init();
-                
+
 
                 //this.load({params: {start: 0, limit: this.tam_pag}})
 
             },
-            
-           
-            
-           onReloadPage: function (m) {     
-               this.maestro = m;
-               var aa=this;
-               this.store.baseParams = {id_cargo: this.maestro.id_cargo};
-               this.load({params: {start: 0, limit: 50}})
-              // this.load();
-             // this.store.baseParams.cod_cargo = this.maestro.cod_cargo;
-              
-             
-              
-           },
-       onButtonDel:function(){
-		if(confirm('¿Está seguro de eliminar competencia?')){
-			//recupera los registros seleccionados
 
-        	var filas=this.sm.getSelections();
-			var data= [],aux={};
 
-            this.agregarArgsExtraSubmit();
-			for(var i=0;i<this.sm.getCount();i++){
-		        aux={};
-				aux[this.id_store]=filas[i].data[this.id_store];
-				aux.cod_competencia=filas[i].data.cod_competencia;
+            onReloadPage: function (m) {
+                this.maestro = m;
+                var aa = this;
+                this.store.baseParams = {id_cargo: this.maestro.id_cargo};
+                this.load({params: {start: 0, limit: 50}})
+                // this.load();
+                // this.store.baseParams.cod_cargo = this.maestro.cod_cargo;
 
-				data.push(aux);
-			}
 
-			//llama el metodo en la capa de control para eliminación
-			var me = this;
-            Ext.Ajax.request({
+            },
+            onButtonDel: function () {
+                if (confirm('¿Está seguro de DES-ASIGNAR la competencia?')) {
+                    //recupera los registros seleccionados
 
-                url: '../../sis_formacion/control/Competencia/eliminarCargoCompetencia',
-                params: {
-                	id_cargo:this.store.baseParams.id_cargo,
-                	competencias: Ext.util.JSON.encode(data)
-                },
+                    var filas = this.sm.getSelections();
+                    var data = [], aux = {};
 
-                success: me.successSave,
-                failure: me.conexionFailure,
-                timeout: me.timeout,
-                scope: me
-            });
-            
-		}
-	},
+                    this.agregarArgsExtraSubmit();
+                    for (var i = 0; i < this.sm.getCount(); i++) {
+                        aux = {};
+                        aux[this.id_store] = filas[i].data[this.id_store];
+                        aux.cod_competencia = filas[i].data.cod_competencia;
+
+                        data.push(aux);
+                    }
+
+                    //llama el metodo en la capa de control para eliminación
+                    var me = this;
+                    Ext.Ajax.request({
+
+                        url: '../../sis_formacion/control/Competencia/eliminarCargoCompetencia',
+                        params: {
+                            id_cargo: this.store.baseParams.id_cargo,
+                            competencias: Ext.util.JSON.encode(data)
+                        },
+
+                        success: me.successSave,
+                        failure: me.conexionFailure,
+                        timeout: me.timeout,
+                        scope: me
+                    });
+
+                }
+            },
 
             Atributos: [
                 {
@@ -289,10 +287,11 @@ header("content-type: text/javascript; charset=UTF-8");
                 field: 'id_competencia',
                 direction: 'ASC'
             },
-            bdel:true,
-	        bedit:false,
-	        bsave:false,
-	        bnew:false,
+            bdel: true,
+            bedit: false,
+            bsave: false,
+            bnew: false,
+
         }
     )
 </script>

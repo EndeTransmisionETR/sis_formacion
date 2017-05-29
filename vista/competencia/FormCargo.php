@@ -78,8 +78,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:false,
 			filters:{pfiltro:'cargo.id_cargo',type:'numeric'},
-			grid:true,
-			grid:false  
+			grid:false
 		},
 		{
 			config:{
@@ -93,7 +92,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				}
 			},
 				type:'TextField',				
-				grid:true,
 				form:false,
 				grid:false  			 
 		},
@@ -137,7 +135,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 			type: 'ComboBox',
 			id_grupo: 0,
 			filters: {pfiltro: 'tipcon.nombre',type: 'string'},
-			grid: true,
 			form: true,
 			grid:false  
 		},
@@ -191,7 +188,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 			type:'TrigguerCombo',
 			filters:{pfiltro:'ofi.nombre',type:'string'},
 			id_grupo:0,
-			grid:true,
 			form:true,
 			grid:false  
 		},
@@ -293,7 +289,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 			type: 'ComboBox',
 			id_grupo: 0,
 			filters: {pfiltro: 'escsal.nombre',type: 'string'},
-			grid: true,
 			form: true,
 			grid:false  
 		},
@@ -309,7 +304,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				type:'TextField',
 				filters:{pfiltro:'cargo.codigo',type:'string'},
 				id_grupo:1,
-				grid:true,
 				form:true,
 				grid:false  
 		},		
@@ -326,7 +320,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				type:'DateField',
 				filters:{pfiltro:'cargo.fecha_ini',type:'date'},
 				id_grupo:1,
-				grid:true,
 				form:true,
 				grid:false  
 		},
@@ -344,7 +337,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				type:'DateField',
 				filters:{pfiltro:'cargo.fecha_fin',type:'date'},
 				id_grupo:1,
-				grid:true,
 				form:true,
 				grid:false  
 		},
@@ -377,7 +369,6 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
 				type:'DateField',
 				filters:{pfiltro:'cargo.fecha_reg',type:'date'},
 				id_grupo:1,
-				grid:true,
 				form:false,
 				grid:false  
 		},
@@ -560,8 +551,7 @@ Phx.vista.FormCargo=Ext.extend(Phx.gridInterfaz,{
                     this.idContenedor,
                     'FormCompetencia');
                     
-            //this.load("ext-comp-1457"); 
-                 
+
 	}
 	
 }
