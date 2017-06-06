@@ -125,7 +125,10 @@ class ACTCompetencia extends ACTbase
 		
 		if ($this->objParam->getParametro('id_uo') != '') {
 			$this->objParam->addFiltro("cargo.id_uo = ". $this->objParam->getParametro('id_uo'));
-		}		
+		}
+        if ($this->objParam->getParametro('id_competencias')) {
+            $this->objParam->addFiltro(" cc.id_competencia in (". $this->objParam->getParametro('id_competencias')." ) ");
+        }
 				
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

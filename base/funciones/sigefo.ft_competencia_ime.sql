@@ -75,8 +75,6 @@ BEGIN
         v_parametros._nombre_usuario_ai,
         NULL,
         NULL
-
-
       )
       RETURNING id_competencia
         INTO v_id_competencia;
